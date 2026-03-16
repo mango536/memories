@@ -289,58 +289,49 @@ select option { background: #1a1028; }
 </div><!-- end main-app -->
 
 <script>
-// Password protection
 const CORRECT_PASSWORD = "2535761315";
-
-function unlock() {
-  const input = document.getElementById("lock-input").value;
-  if(input === CORRECT_PASSWORD) {
-    document.getElementById("lock-screen").classList.add("hidden");
-    document.getElementById("main-app").style.display = "block";
-    sessionStorage.setItem("unlocked","1");
-    sessionStorage.setItem("unlock-time", Date.now().toString());
-    document.getElementById("lock-input").value = "";
-    resetTimeout();
-  } else {
-    const err = document.getElementById("lock-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("lock-input").value = "";
-    setTimeout(()=>{ err.textContent = ""; }, 3000);
-  }
-}
-
-// Auto-lock after 10 minutes of inactivity
 let timeoutTimer = null;
 const TIMEOUT_MS = 10 * 60 * 1000;
 
-function resetTimeout() {
+function unlock() {
+  var pw = document.getElementById('lock-input').value;
+  if(pw === CORRECT_PASSWORD) {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    sessionStorage.setItem('unlocked','1');
+    document.getElementById('lock-input').value = '';
+    startTimeout();
+  } else {
+    document.getElementById('lock-error').textContent = 'Incorrect password.';
+    document.getElementById('lock-input').value = '';
+    setTimeout(function(){ document.getElementById('lock-error').textContent=''; }, 3000);
+  }
+}
+
+function startTimeout() {
   clearTimeout(timeoutTimer);
   timeoutTimer = setTimeout(lockApp, TIMEOUT_MS);
 }
 
 function lockApp() {
-  sessionStorage.removeItem("unlocked");
-  sessionStorage.removeItem("unlock-time");
-  document.getElementById("lock-screen").classList.remove("hidden");
-  document.getElementById("main-app").style.display = "none";
+  sessionStorage.removeItem('unlocked');
+  document.getElementById('lock-screen').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'none';
 }
-
-["click","keydown","touchstart","mousemove"].forEach(evt => {
-  document.addEventListener(evt, () => {
-    if(sessionStorage.getItem("unlocked")==="1") resetTimeout();
-  }, { passive: true });
-});
 
 function togglePw() {
-  const input = document.getElementById("lock-input");
-  input.type = input.type === "password" ? "text" : "password";
+  var i = document.getElementById('lock-input');
+  i.type = i.type === 'password' ? 'text' : 'password';
 }
 
-// Check if already unlocked this session
-if(sessionStorage.getItem("unlocked") === "1") {
-  document.getElementById("lock-screen").classList.add("hidden");
-  document.getElementById("main-app").style.display = "block";
-  resetTimeout();
+document.addEventListener('click', function(){ if(sessionStorage.getItem('unlocked')==='1') startTimeout(); });
+document.addEventListener('keydown', function(){ if(sessionStorage.getItem('unlocked')==='1') startTimeout(); });
+document.addEventListener('touchstart', function(){ if(sessionStorage.getItem('unlocked')==='1') startTimeout(); }, {passive:true});
+
+if(sessionStorage.getItem('unlocked') === '1') {
+  document.getElementById('lock-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  startTimeout();
 }
 
 const EMOTIONS = ["Joy","Fear","Sadness","Anger","Shame","Love","Confusion","Peace","Grief","Wonder"];
@@ -638,15 +629,26 @@ function importMemories(e) {
   const r=new FileReader();
   r.onload=ev=>{
     try {
-      const imp=JSON.parse(ev.target.result);
-      if(!Array.isArray(imp)) throw new Error();
+      let text = ev.target.result;
+      const imp=JSON.parse(text);
+      if(!Array.isArray(imp)) throw new Error("Not an array");
       let added=0;
-      imp.forEach(m=>{if(!memories.find(x=>x.id===m.id)){memories.push(m);added++;}});
-      save(); renderAll();
-      alert(`Done! ${added} new memories added.`);
-    } catch { alert("Could not read that file."); }
+      imp.forEach(m=>{
+        if(m.id && !memories.find(x=>x.id===m.id)){
+          memories.push(m);
+          added++;
+        }
+      });
+      save();
+      renderAll();
+      setTimeout(()=>alert(`Import complete! ${added} new memories added. Total: ${memories.length}`), 100);
+    } catch(err) {
+      setTimeout(()=>alert("Could not read that file. Error: " + err.message), 100);
+    }
   };
-  r.readAsText(file); e.target.value="";
+  r.onerror = ()=>{ alert("File reading failed."); };
+  r.readAsText(file);
+  setTimeout(()=>{ e.target.value=""; }, 500);
 }
 
 function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
