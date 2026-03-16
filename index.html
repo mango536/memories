@@ -97,6 +97,7 @@ select option{background:#1a1028}
   <h1>Memory Timeline</h1>
   <div class="header-btns">
     <span class="btn-sm" id="memory-count">0 memories</span>
+    <button class="btn-sm" id="search-btn">🔍 Search</button>
     <button class="btn-sm" id="export-btn">↓ Export</button>
     <label class="btn-sm" style="cursor:pointer">↑ Import<input type="file" id="import-file" accept=".json" style="display:none"></label>
   </div>
@@ -134,6 +135,11 @@ select option{background:#1a1028}
 <div id="view-detail" class="view">
   <button class="back-btn" id="back-btn">← Back</button>
   <div class="detail-box" id="detail-content"></div>
+</div>
+<div id="view-search" class="view">
+  <div style="font-size:0.65rem;letter-spacing:0.2em;color:#7a6a90;text-transform:uppercase;margin-bottom:0.5rem">Search</div>
+  <input type="text" id="search-input" placeholder="Search memories…" style="margin-bottom:1rem">
+  <div id="search-results"></div>
 </div>
 <div id="view-patterns" class="view">
   <div id="patterns-content"></div>
@@ -205,7 +211,11 @@ var selectedConfidence = "";
 
 function parseTags(str) {
   if(!str) return [];
-  return str.split(",").map(function(s){ return s.trim(); }).filter(Boolean);
+  return str.split(",").map(function(s){
+    var t = s.trim();
+    if(!t) return "";
+    return t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+  }).filter(Boolean);
 }
 
 function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
@@ -231,16 +241,54 @@ function wireButtons() {
   document.getElementById("import-file").onchange = importMemories;
   document.getElementById("f-title").oninput = checkForm;
   document.getElementById("f-content").oninput = checkForm;
+  document.getElementById("search-btn").onclick = function(){ showView("search"); document.getElementById("search-input").focus(); };
+  document.getElementById("search-input").oninput = renderSearch;
 }
 
 function showView(v) {
   document.querySelectorAll(".view").forEach(function(el){ el.classList.remove("active"); });
   document.querySelectorAll(".nav-btn").forEach(function(el){ el.classList.remove("active"); });
   document.getElementById("view-"+v).classList.add("active");
-  document.getElementById("nav-"+v).classList.add("active");
+  var navBtn = document.getElementById("nav-"+v);
+  if(navBtn) navBtn.classList.add("active");
   if(v==="add" && !editingId) resetForm();
   if(v==="patterns") renderPatterns();
   if(v==="timeline") renderTimeline();
+  if(v==="search") renderSearch();
+}
+
+function renderSearch() {
+  var q = (document.getElementById("search-input").value||"").trim().toLowerCase();
+  var el = document.getElementById("search-results");
+  if(!q) { el.innerHTML = '<p style="color:#6a5a80;font-size:0.85rem">Type to search across all memories.</p>'; return; }
+  var results = memories.filter(function(m){
+    return [m.title,m.content,m.sensoryDetails,m.trigger,m.recurringTheme,m.people,m.lifeStage].some(function(f){
+      return f && f.toLowerCase().indexOf(q)>-1;
+    }) || (m.emotions||[]).some(function(e){ return e.toLowerCase().indexOf(q)>-1; });
+  });
+  if(!results.length) { el.innerHTML = '<p style="color:#6a5a80;font-size:0.85rem">No memories found for "'+esc(q)+'".</p>'; return; }
+  var html = '<p style="color:#6a5a80;font-size:0.78rem;margin-bottom:0.75rem">'+results.length+' result'+(results.length===1?'':'s')+'</p>';
+  results.forEach(function(m){
+    var dc = CC[m.confidence]||"#4a3f6b";
+    html += '<div class="card" style="margin-bottom:0.85rem" data-sid="'+m.id+'">';
+    html += '<div class="card-meta">'+(m.lifeStage||'')+(m.approximateAge?' · ~'+m.approximateAge:'')+'</div>';
+    html += '<div class="card-title">'+highlight(esc(m.title),q)+'</div>';
+    html += '<div class="card-preview">'+highlight(esc(m.content),q)+'</div>';
+    html += '<div class="tags">';
+    (m.emotions||[]).forEach(function(e){ html += '<span class="tag" style="background:rgba('+hexToRgb(EC[e])+',0.15);color:'+EC[e]+';border:1px solid rgba('+hexToRgb(EC[e])+',0.4)">'+e+'</span>'; });
+    parseTags(m.people).forEach(function(p){ html += '<span class="tag" style="background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>'; });
+    html += '</div></div>';
+  });
+  el.innerHTML = html;
+  document.querySelectorAll("[data-sid]").forEach(function(card){
+    card.onclick = function(){ showDetail(card.dataset.sid); };
+  });
+}
+
+function highlight(text, q) {
+  if(!q) return text;
+  var re = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  return text.replace(re,'<mark style="background:rgba(176,143,212,0.35);color:#e8e0f0;border-radius:2px">$1</mark>');
 }
 
 function renderAll() {
@@ -463,6 +511,43 @@ function renderPatterns() {
   if(!gaps.length) html+='<p style="color:#6a5a80;font-size:0.82rem">All life stages represented.</p>';
   else gaps.forEach(function(s){ html+='<div style="font-size:0.8rem;color:#6a5a80;margin-bottom:0.3rem">◦ '+s+'</div>'; });
   html+='</div>';
+
+  // People patterns
+  var peopleMems = memories.filter(function(m){ return parseTags(m.people).length > 0; });
+  if(peopleMems.length) {
+    var personData = {};
+    peopleMems.forEach(function(m){
+      parseTags(m.people).forEach(function(p){
+        if(!personData[p]) personData[p] = { count:0, themes:{}, emotions:{} };
+        personData[p].count++;
+        parseTags(m.recurringTheme).forEach(function(t){ personData[p].themes[t]=(personData[p].themes[t]||0)+1; });
+        (m.emotions||[]).forEach(function(e){ personData[p].emotions[e]=(personData[p].emotions[e]||0)+1; });
+      });
+    });
+    html += '<div class="p-card"><div class="p-title">People & Associations</div>';
+    Object.entries(personData).sort(function(a,b){ return b[1].count-a[1].count; }).forEach(function(entry){
+      var name = entry[0], data = entry[1];
+      var topThemes = Object.entries(data.themes).sort(function(a,b){ return b[1]-a[1]; }).slice(0,5).map(function(t){ return t[0]; });
+      var topEmotions = Object.entries(data.emotions).sort(function(a,b){ return b[1]-a[1]; }).slice(0,4).map(function(e){ return e[0]; });
+      html += '<div style="margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid rgba(176,143,212,0.1)">';
+      html += '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">';
+      html += '<span style="font-size:0.95rem;color:#e8c97e">'+esc(name)+'</span>';
+      html += '<span style="font-size:0.72rem;color:#6a5a80">'+data.count+' memor'+(data.count===1?'y':'ies')+'</span></div>';
+      if(topEmotions.length) {
+        html += '<div style="margin-bottom:0.35rem"><span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#6a5a80">Emotions: </span>';
+        topEmotions.forEach(function(e){ html += '<span class="tag" style="background:rgba('+hexToRgb(EC[e])+',0.15);color:'+EC[e]+';border:1px solid rgba('+hexToRgb(EC[e])+',0.4)">'+e+'</span> '; });
+        html += '</div>';
+      }
+      if(topThemes.length) {
+        html += '<div><span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#6a5a80">Themes: </span>';
+        topThemes.forEach(function(t){ html += '<span class="tag" style="background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t)+'</span> '; });
+        html += '</div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
   el.innerHTML = html;
 }
 
