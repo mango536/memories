@@ -153,16 +153,29 @@ select option{background:#1a1028}
 
 <script>
 var PASSWORD = "2535761315";
+var THERAPIST_PASSWORD = "therapist";
 var TIMEOUT_MS = 10 * 60 * 1000;
 var timer = null;
+var readOnly = false;
 
 // Lock screen
 document.getElementById("lock-btn").addEventListener("click", function() {
   var pw = document.getElementById("lock-input").value;
   if(pw === PASSWORD) {
+    readOnly = false;
     document.getElementById("lock-screen").style.display = "none";
     document.getElementById("main-app").style.display = "block";
     sessionStorage.setItem("unlocked","1");
+    sessionStorage.setItem("readonly","0");
+    document.getElementById("lock-input").value = "";
+    resetTimer();
+    load();
+  } else if(pw === THERAPIST_PASSWORD) {
+    readOnly = true;
+    document.getElementById("lock-screen").style.display = "none";
+    document.getElementById("main-app").style.display = "block";
+    sessionStorage.setItem("unlocked","1");
+    sessionStorage.setItem("readonly","1");
     document.getElementById("lock-input").value = "";
     resetTimer();
     load();
@@ -222,10 +235,28 @@ function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").repla
 
 function load() {
   try { var r = localStorage.getItem("mt-v1"); if(r) memories = JSON.parse(r); } catch(e){}
+  readOnly = sessionStorage.getItem("readonly") === "1";
   buildEmoButtons();
   buildConfidenceOpts();
   wireButtons();
+  applyReadOnly();
   renderAll();
+}
+
+function applyReadOnly() {
+  var addBtn = document.getElementById("nav-add");
+  var exportBtn = document.getElementById("export-btn");
+  var importLabel = document.querySelector("label.btn-sm");
+  var searchBtn = document.getElementById("search-btn");
+  if(readOnly) {
+    addBtn.style.display = "none";
+    exportBtn.style.display = "none";
+    importLabel.style.display = "none";
+  } else {
+    addBtn.style.display = "";
+    exportBtn.style.display = "";
+    importLabel.style.display = "";
+  }
 }
 
 function saveData() { try { localStorage.setItem("mt-v1", JSON.stringify(memories)); } catch(e){} }
@@ -377,7 +408,11 @@ function showDetail(id) {
   if(m.trigger) html += '<div class="sec"><div class="sec-label">Trigger</div><div class="sec-body">'+esc(m.trigger)+'</div></div>';
   if(parseTags(m.recurringTheme).length) { html += '<div class="sec"><div class="sec-label">Recurring Themes</div><div class="tags">'; parseTags(m.recurringTheme).forEach(function(t){ html += '<span class="tag" style="padding:0.3rem 0.7rem;background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t)+'</span>'; }); html += '</div></div>'; }
   if(m.confidence) html += '<div class="sec"><div class="sec-label">Confidence</div><div class="sec-body" style="color:'+dc+'">'+m.confidence+'</div></div>';
-  html += '<div class="detail-actions"><button class="btn-edit" data-edit="'+id+'">Edit</button><button class="btn-del" data-del="'+id+'">Delete</button></div>';
+  html += '<div class="detail-actions">';
+  if(!readOnly) {
+    html += '<button class="btn-edit" data-edit="'+id+'">Edit</button><button class="btn-del" data-del="'+id+'">Delete</button>';
+  }
+  html += '</div>';
   document.getElementById("detail-content").innerHTML = html;
   document.querySelector("[data-edit]").onclick = function(){ startEdit(id); };
   document.querySelector("[data-del]").onclick = function(){ deleteMemory(id); };
@@ -596,6 +631,7 @@ function importMemories() {
 
 // Auto-unlock if already unlocked this session
 if(sessionStorage.getItem("unlocked") === "1") {
+  readOnly = sessionStorage.getItem("readonly") === "1";
   document.getElementById("lock-screen").style.display = "none";
   document.getElementById("main-app").style.display = "block";
   resetTimer();
