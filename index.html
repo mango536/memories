@@ -25,7 +25,7 @@ h1{font-size:1.6rem;font-weight:normal}
 .header-btns{display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap}
 .btn-sm{padding:0.28rem 0.75rem;border-radius:2rem;font-size:0.72rem;cursor:pointer;border:1px solid rgba(176,143,212,0.25);background:transparent;color:#b08fd4;font-family:inherit}
 #bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(13,10,26,0.98);border-top:1px solid rgba(176,143,212,0.2);z-index:100}
-.nav-btn{flex:1;padding:1rem 0.5rem;border:none;background:transparent;color:#7a6a90;font-family:inherit;font-size:0.82rem;cursor:pointer;border-top:2px solid transparent;transition:all 0.2s}
+.nav-btn{flex:1;padding:0.85rem 0.25rem;border:none;background:transparent;color:#7a6a90;font-family:inherit;font-size:0.75rem;cursor:pointer;border-top:2px solid transparent;transition:all 0.2s}
 .nav-btn.active{color:#e8e0f0;border-top-color:#b08fd4;background:rgba(176,143,212,0.08)}
 .view{display:none;padding:1.25rem}
 .view.active{display:block}
@@ -55,13 +55,10 @@ h1{font-size:1.6rem;font-weight:normal}
 .field{margin-bottom:1.1rem}
 .field label{display:block;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:#8a7aa0;margin-bottom:0.2rem}
 .field .hint{font-size:0.7rem;color:#5a4a70;margin-bottom:0.4rem}
-input[type=text],input[type=number],textarea,select{width:100%;padding:0.65rem 0.85rem;border-radius:0.5rem;font-size:0.88rem;background:rgba(255,255,255,0.05);border:1px solid rgba(176,143,212,0.2);color:#e8e0f0;font-family:Georgia,serif;outline:none;-webkit-appearance:none}
+input[type=text],textarea,select{width:100%;padding:0.65rem 0.85rem;border-radius:0.5rem;font-size:0.88rem;background:rgba(255,255,255,0.05);border:1px solid rgba(176,143,212,0.2);color:#e8e0f0;font-family:Georgia,serif;outline:none;-webkit-appearance:none}
 textarea{resize:vertical;line-height:1.65;min-height:90px}
 select option{background:#1a1028}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:0.85rem}
-.emo-btns{display:flex;flex-wrap:wrap;gap:0.3rem}
-.emo-btn{padding:0.28rem 0.65rem;border-radius:2rem;font-size:0.75rem;cursor:pointer;border:1px solid rgba(176,143,212,0.2);background:transparent;color:#7a6a90;font-family:inherit;transition:all 0.15s}
-.emo-btn.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--c)}
 .radio-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.45rem;cursor:pointer;padding:0.3rem 0}
 .radio-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(176,143,212,0.3);flex-shrink:0;transition:all 0.15s}
 .radio-dot.on{background:var(--dc);border-color:var(--dc)}
@@ -77,6 +74,22 @@ select option{background:#1a1028}
 .bar-track{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,0.05)}
 .bar-fill{height:100%;border-radius:3px}
 .bar-n{font-size:0.7rem;color:#6a5a80;width:16px;text-align:right}
+.canvas-wrap{border-radius:0.5rem;overflow:hidden;border:1px solid rgba(176,143,212,0.2);background:#1a1028;touch-action:none}
+.draw-canvas{display:block;width:100%;cursor:crosshair}
+.canvas-tools{display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;align-items:center}
+.tool-btn{padding:0.3rem 0.7rem;border-radius:2rem;font-size:0.75rem;cursor:pointer;border:1px solid rgba(176,143,212,0.2);background:transparent;color:#7a6a90;font-family:inherit}
+.tool-btn.active{border-color:#b08fd4;color:#b08fd4;background:rgba(176,143,212,0.1)}
+.cdot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.cdot.active{border-color:#fff}
+.sz{flex:1;min-width:60px;max-width:100px}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:0.5rem;margin-top:0.5rem}
+.photo-thumb{position:relative;border-radius:0.4rem;overflow:hidden;aspect-ratio:1;background:rgba(255,255,255,0.03);border:1px solid rgba(176,143,212,0.15)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.6);border:none;color:#e87e7e;cursor:pointer;border-radius:50%;width:20px;height:20px;font-size:12px;display:flex;align-items:center;justify-content:center}
+.photo-add{border:1px dashed rgba(176,143,212,0.3);border-radius:0.4rem;aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6a5a80;font-size:1.5rem;background:transparent}
+.detail-img{width:100%;border-radius:0.5rem;margin-bottom:0.5rem}
+.lib-item{background:rgba(255,255,255,0.03);border:1px solid rgba(176,143,212,0.12);border-radius:0.65rem;padding:0.9rem;margin-bottom:0.85rem}
+.lib-del{padding:0.25rem 0.65rem;border-radius:2rem;border:1px solid rgba(232,126,126,0.3);background:transparent;color:#e87e7e;cursor:pointer;font-size:0.72rem;font-family:inherit;margin-top:0.5rem}
 </style>
 </head>
 <body>
@@ -99,9 +112,10 @@ select option{background:#1a1028}
     <span class="btn-sm" id="memory-count">0 memories</span>
     <button class="btn-sm" id="search-btn">🔍 Search</button>
     <button class="btn-sm" id="export-btn">↓ Export</button>
-    <label class="btn-sm" style="cursor:pointer">↑ Import<input type="file" id="import-file" accept=".json" style="display:none"></label>
+    <label class="btn-sm" style="cursor:pointer" id="import-label">↑ Import<input type="file" id="import-file" accept=".json" style="display:none"></label>
   </div>
 </header>
+
 <div id="view-timeline" class="view active">
   <div class="filter-wrap">
     <div class="filter-label">Filter by emotion</div>
@@ -110,11 +124,12 @@ select option{background:#1a1028}
   </div>
   <div id="timeline-list"></div>
 </div>
+
 <div id="view-add" class="view">
   <div style="font-size:0.65rem;letter-spacing:0.2em;color:#7a6a90;text-transform:uppercase;margin-bottom:0.3rem" id="form-mode-label">New Memory</div>
   <h2 style="font-size:1.25rem;font-weight:normal;margin-bottom:1.5rem" id="form-title-label">Record a returning memory</h2>
-  <div class="field"><label>Title *</label><div class="hint">A short name for this memory</div><input type="text" id="f-title" placeholder="e.g. The red bicycle…"></div>
-  <div class="field"><label>Memory *</label><div class="hint">Describe what you remember</div><textarea id="f-content" placeholder="Write freely. You can always edit later."></textarea></div>
+  <div class="field"><label>Title *</label><input type="text" id="f-title" placeholder="e.g. The red bicycle…"></div>
+  <div class="field"><label>Memory *</label><textarea id="f-content" placeholder="Write freely. You can always edit later."></textarea></div>
   <div class="field"><label>Sensory Details</label><div class="hint">Smells, sounds, textures, temperature</div><input type="text" id="f-sensory" placeholder="e.g. The smell of pine, cold floor…"></div>
   <div class="two-col">
     <div class="field"><label>Life Stage</label>
@@ -122,520 +137,499 @@ select option{background:#1a1028}
     </div>
     <div class="field"><label>Approx. Age</label><input type="text" id="f-age" placeholder="e.g. 7 or 7–9"></div>
   </div>
-  <div class="field"><label>Emotions</label><div class="hint">Tap all that apply</div><div class="emo-btns" id="emo-btns"></div></div>
-  <div class="field"><label>People</label><div class="hint">Comma separated — e.g. Mum, Uncle Ray</div><input type="text" id="f-people" placeholder="e.g. Mum, Dad, Sister"></div>
-  <div class="field"><label>What triggered this memory?</label><div class="hint">A smell, place, conversation, dream…</div><input type="text" id="f-trigger" placeholder="e.g. Driving past my old school…"></div>
-  <div class="field"><label>Recurring Themes</label><div class="hint">Comma separated — e.g. abandonment, safety</div><input type="text" id="f-theme" placeholder="e.g. abandonment, safety, belonging…"></div>
+  <div class="field"><label>Emotions</label><div class="hint">Comma separated — any emotions e.g. Fear, Shame, Curiosity, Wonder</div><input type="text" id="f-emotions" placeholder="e.g. Joy, Fear, Shame…"></div>
+  <div class="field"><label>People</label><div class="hint">Comma separated</div><input type="text" id="f-people" placeholder="e.g. Mum, Dad, Sister"></div>
+  <div class="field"><label>What triggered this memory?</label><input type="text" id="f-trigger" placeholder="e.g. Driving past my old school…"></div>
+  <div class="field"><label>Recurring Themes</label><div class="hint">Comma separated</div><input type="text" id="f-theme" placeholder="e.g. abandonment, safety, belonging…"></div>
   <div class="field"><label>Confidence Level</label><div id="confidence-opts"></div></div>
+  <div class="field">
+    <label>Spatial Drawing</label>
+    <div class="hint">Sketch a floor plan or scene with your finger or mouse</div>
+    <div class="canvas-wrap"><canvas id="draw-canvas" class="draw-canvas" height="280"></canvas></div>
+    <div class="canvas-tools">
+      <button class="tool-btn active" id="tool-pen">✏️ Draw</button>
+      <button class="tool-btn" id="tool-erase">⬜ Erase</button>
+      <button class="tool-btn" id="tool-clear">🗑 Clear</button>
+      <div class="cdot active" style="background:#e8e0f0" data-color="#e8e0f0"></div>
+      <div class="cdot" style="background:#e87ea8" data-color="#e87ea8"></div>
+      <div class="cdot" style="background:#7eb8e8" data-color="#7eb8e8"></div>
+      <div class="cdot" style="background:#7ee8b8" data-color="#7ee8b8"></div>
+      <div class="cdot" style="background:#e8c97e" data-color="#e8c97e"></div>
+      <input type="range" id="brush-size" class="sz" min="1" max="20" value="3">
+    </div>
+  </div>
+  <div class="field">
+    <label>Photos</label>
+    <div class="photo-grid" id="photo-grid"><div class="photo-add" id="photo-add-btn">+</div></div>
+    <input type="file" id="photo-input" accept="image/*" multiple style="display:none">
+  </div>
   <div style="display:flex;gap:0.6rem;margin-top:0.5rem">
     <button class="btn-save" id="btn-save">Save Memory</button>
     <button class="btn-cancel" id="btn-cancel">Cancel</button>
   </div>
 </div>
+
 <div id="view-detail" class="view">
   <button class="back-btn" id="back-btn">← Back</button>
   <div class="detail-box" id="detail-content"></div>
 </div>
+
 <div id="view-search" class="view">
   <div style="font-size:0.65rem;letter-spacing:0.2em;color:#7a6a90;text-transform:uppercase;margin-bottom:0.5rem">Search</div>
-  <input type="text" id="search-input" placeholder="Search memories…" style="margin-bottom:1rem">
+  <input type="text" id="search-input" placeholder="Search all memories…" style="margin-bottom:1rem">
   <div id="search-results"></div>
 </div>
+
 <div id="view-patterns" class="view">
   <div id="patterns-content"></div>
 </div>
+
+<div id="view-library" class="view">
+  <div style="font-size:0.65rem;letter-spacing:0.2em;color:#7a6a90;text-transform:uppercase;margin-bottom:0.3rem">Media Library</div>
+  <h2 style="font-size:1.25rem;font-weight:normal;margin-bottom:0.4rem">Shared Sketches & Images</h2>
+  <p style="font-size:0.78rem;color:#6a5a80;margin-bottom:1.25rem;line-height:1.6">Store floor plans, maps, and photos that relate to multiple memories.</p>
+  <div id="lib-items"></div>
+  <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(176,143,212,0.15);border-radius:0.75rem;padding:1.1rem;margin-top:0.5rem">
+    <div style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#8a7aa0;margin-bottom:0.85rem">Add to Library</div>
+    <div class="field"><label>Title</label><input type="text" id="lib-title" placeholder="e.g. Floor plan — Maple Street house"></div>
+    <div class="field"><label>Notes</label><input type="text" id="lib-notes" placeholder="e.g. Ages 3–10, before the move"></div>
+    <div class="field">
+      <label>Sketch</label>
+      <div class="canvas-wrap"><canvas id="lib-canvas" class="draw-canvas" height="280"></canvas></div>
+      <div class="canvas-tools">
+        <button class="tool-btn active" id="lib-pen">✏️ Draw</button>
+        <button class="tool-btn" id="lib-erase">⬜ Erase</button>
+        <button class="tool-btn" id="lib-clear">🗑 Clear</button>
+        <div class="cdot active" style="background:#e8e0f0" data-lcolor="#e8e0f0"></div>
+        <div class="cdot" style="background:#e87ea8" data-lcolor="#e87ea8"></div>
+        <div class="cdot" style="background:#7eb8e8" data-lcolor="#7eb8e8"></div>
+        <div class="cdot" style="background:#7ee8b8" data-lcolor="#7ee8b8"></div>
+        <div class="cdot" style="background:#e8c97e" data-lcolor="#e8c97e"></div>
+        <input type="range" id="lib-brush" class="sz" min="1" max="20" value="3">
+      </div>
+    </div>
+    <div class="field">
+      <label>Or attach an image</label>
+      <label class="btn-sm" style="cursor:pointer;display:inline-block;margin-top:0.25rem">Choose image<input type="file" id="lib-photo-input" accept="image/*" style="display:none"></label>
+      <div id="lib-photo-preview" style="margin-top:0.5rem"></div>
+    </div>
+    <button class="btn-save" id="lib-save-btn" style="margin-top:0.25rem">Save to Library</button>
+  </div>
+</div>
+
 <div id="bottom-nav">
   <button class="nav-btn active" id="nav-timeline">Timeline</button>
   <button class="nav-btn" id="nav-patterns">Patterns</button>
+  <button class="nav-btn" id="nav-library">Library</button>
   <button class="nav-btn" id="nav-add">+ Add</button>
 </div>
-</div><!-- end main-app -->
+</div>
 
 <script>
-var PASSWORD = "2535761315";
-var THERAPIST_PASSWORD = "therapist";
-var TIMEOUT_MS = 10 * 60 * 1000;
-var timer = null;
-var readOnly = false;
+var PW="2535761315",TPW="therapist",TOMS=600000,tmr=null,ro=false;
+var dCtx=null,dDrw=false,dMode="pen",dClr="#e8e0f0",dSz=3;
+var lCtx=null,lDrw=false,lMode="pen",lClr="#e8e0f0",lSz=3,lPh=null;
+var cPhotos=[],mems=[],lib=[];
+var fEmo=null,fPer=null,editId=null,selConf="";
 
-// Lock screen
-document.getElementById("lock-btn").addEventListener("click", function() {
-  var pw = document.getElementById("lock-input").value;
-  if(pw === PASSWORD) {
-    readOnly = false;
-    document.getElementById("lock-screen").style.display = "none";
-    document.getElementById("main-app").style.display = "block";
-    sessionStorage.setItem("unlocked","1");
-    sessionStorage.setItem("readonly","0");
-    document.getElementById("lock-input").value = "";
-    resetTimer();
-    load();
-  } else if(pw === THERAPIST_PASSWORD) {
-    readOnly = true;
-    document.getElementById("lock-screen").style.display = "none";
-    document.getElementById("main-app").style.display = "block";
-    sessionStorage.setItem("unlocked","1");
-    sessionStorage.setItem("readonly","1");
-    document.getElementById("lock-input").value = "";
-    resetTimer();
-    load();
-  } else {
-    document.getElementById("lock-error").textContent = "Incorrect password.";
-    document.getElementById("lock-input").value = "";
-    setTimeout(function(){ document.getElementById("lock-error").textContent = ""; }, 3000);
+var STAGES=["Early Childhood (0–5)","Childhood (6–11)","Adolescence (12–17)","Young Adult (18–25)","Adult (26–40)","Later Adult (41+)","Uncertain"];
+var CONF=["Vague impression","Partial memory","Fairly clear","Vivid & detailed"];
+var CC={"Vague impression":"#4a3f6b","Partial memory":"#6b5a8a","Fairly clear":"#8b6db0","Vivid & detailed":"#b08fd4"};
+var ECM={joy:"#e8c97e",fear:"#7e9ce8",sadness:"#7eb8e8",anger:"#e87e7e",shame:"#c97eb0",love:"#e87ea8",confusion:"#a0a0a0",peace:"#7ee8b8",grief:"#8a7ec9",wonder:"#c9e87e",anxiety:"#c9a87e",guilt:"#9ea87e",loneliness:"#7e8ea8",excitement:"#e87eb8",relief:"#7ec9b0",pride:"#b08fd4",joy:"#e8c97e"};
+function ec(e){return ECM[e.toLowerCase()]||"#8a7aa0";}
+function pt(s){if(!s)return[];return s.split(",").map(function(x){var t=x.trim();return t?t[0].toUpperCase()+t.slice(1).toLowerCase():"";}).filter(Boolean);}
+function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function rgb(h){return parseInt(h.slice(1,3),16)+","+parseInt(h.slice(3,5),16)+","+parseInt(h.slice(5,7),16);}
+function pAge(s){if(!s)return 999;var n=s.match(/\d+/);return n?parseFloat(n[0]):999;}
+
+document.getElementById("lock-btn").addEventListener("click",function(){
+  var pw=document.getElementById("lock-input").value;
+  if(pw===PW||pw===TPW){
+    ro=pw===TPW;
+    document.getElementById("lock-screen").style.display="none";
+    document.getElementById("main-app").style.display="block";
+    sessionStorage.setItem("unlocked","1");sessionStorage.setItem("ro",ro?"1":"0");
+    document.getElementById("lock-input").value="";
+    resetTmr();load();
+  }else{
+    document.getElementById("lock-error").textContent="Incorrect password.";
+    document.getElementById("lock-input").value="";
+    setTimeout(function(){document.getElementById("lock-error").textContent="";},3000);
   }
 });
+document.getElementById("lock-input").addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("lock-btn").click();});
+document.getElementById("lock-toggle").addEventListener("click",function(){var i=document.getElementById("lock-input");i.type=i.type==="password"?"text":"password";});
+function resetTmr(){clearTimeout(tmr);tmr=setTimeout(function(){sessionStorage.removeItem("unlocked");document.getElementById("lock-screen").style.display="flex";document.getElementById("main-app").style.display="none";},TOMS);}
+["click","keydown"].forEach(function(e){document.addEventListener(e,function(){if(sessionStorage.getItem("unlocked")==="1")resetTmr();});});
+document.addEventListener("touchstart",function(){if(sessionStorage.getItem("unlocked")==="1")resetTmr();},{passive:true});
 
-document.getElementById("lock-input").addEventListener("keydown", function(e) {
-  if(e.key === "Enter") document.getElementById("lock-btn").click();
-});
-
-document.getElementById("lock-toggle").addEventListener("click", function() {
-  var i = document.getElementById("lock-input");
-  i.type = i.type === "password" ? "text" : "password";
-});
-
-function resetTimer() {
-  clearTimeout(timer);
-  timer = setTimeout(function() {
-    sessionStorage.removeItem("unlocked");
-    document.getElementById("lock-screen").style.display = "flex";
-    document.getElementById("main-app").style.display = "none";
-  }, TIMEOUT_MS);
+function load(){
+  try{var r=localStorage.getItem("mt-v1");if(r)mems=JSON.parse(r);}catch(e){}
+  try{var l=localStorage.getItem("mt-lib");if(l)lib=JSON.parse(l);}catch(e){}
+  ro=sessionStorage.getItem("ro")==="1";
+  buildConf();wireAll();applyRO();renderAll();
+  setTimeout(function(){initDraw();initLib();},120);
+}
+function svMems(){try{localStorage.setItem("mt-v1",JSON.stringify(mems));}catch(e){}}
+function svLib(){try{localStorage.setItem("mt-lib",JSON.stringify(lib));}catch(e){}}
+function applyRO(){
+  ["nav-add","export-btn"].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=ro?"none":"";});
+  var il=document.getElementById("import-label");if(il)il.style.display=ro?"none":"";
+  var nl=document.getElementById("nav-library");if(nl)nl.style.display=ro?"none":"";
 }
 
-document.addEventListener("click", function(){ if(sessionStorage.getItem("unlocked")==="1") resetTimer(); });
-document.addEventListener("keydown", function(){ if(sessionStorage.getItem("unlocked")==="1") resetTimer(); });
-document.addEventListener("touchstart", function(){ if(sessionStorage.getItem("unlocked")==="1") resetTimer(); }, {passive:true});
-
-// App constants
-var EMOTIONS = ["Joy","Fear","Sadness","Anger","Shame","Love","Confusion","Peace","Grief","Wonder"];
-var STAGES = ["Early Childhood (0–5)","Childhood (6–11)","Adolescence (12–17)","Young Adult (18–25)","Adult (26–40)","Later Adult (41+)","Uncertain"];
-var CONFIDENCE = ["Vague impression","Partial memory","Fairly clear","Vivid & detailed"];
-var EC = {Joy:"#e8c97e",Fear:"#7e9ce8",Sadness:"#7eb8e8",Anger:"#e87e7e",Shame:"#c97eb0",Love:"#e87ea8",Confusion:"#a0a0a0",Peace:"#7ee8b8",Grief:"#8a7ec9",Wonder:"#c9e87e"};
-var CC = {"Vague impression":"#4a3f6b","Partial memory":"#6b5a8a","Fairly clear":"#8b6db0","Vivid & detailed":"#b08fd4"};
-
-var memories = [];
-var filterEmotion = null;
-var filterPerson = null;
-var editingId = null;
-var selectedEmotions = [];
-var selectedConfidence = "";
-
-function parseTags(str) {
-  if(!str) return [];
-  return str.split(",").map(function(s){
-    var t = s.trim();
-    if(!t) return "";
-    return t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
-  }).filter(Boolean);
+function mkCanvas(id,onPen,onErase,onClear,colorAttr,sizeId){
+  var canvas=document.getElementById(id);if(!canvas)return null;
+  canvas.width=canvas.offsetWidth||340;
+  var ctx=canvas.getContext("2d");
+  ctx.fillStyle="#1a1028";ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.lineCap="round";ctx.lineJoin="round";
+  var drawing=false,mode="pen",clr="#e8e0f0",sz=3;
+  function gp(e){var r=canvas.getBoundingClientRect(),sx=canvas.width/r.width,sy=canvas.height/r.height,s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*sx,y:(s.clientY-r.top)*sy};}
+  function start(e){e.preventDefault&&e.preventDefault();drawing=true;var p=gp(e);ctx.beginPath();ctx.moveTo(p.x,p.y);}
+  function move(e){e.preventDefault&&e.preventDefault();if(!drawing)return;var p=gp(e);if(mode==="erase"){ctx.clearRect(p.x-sz*3,p.y-sz*3,sz*6,sz*6);}else{ctx.strokeStyle=clr;ctx.lineWidth=sz;ctx.lineTo(p.x,p.y);ctx.stroke();}}
+  function stop(){drawing=false;ctx.beginPath();}
+  canvas.addEventListener("mousedown",start);canvas.addEventListener("mousemove",move);canvas.addEventListener("mouseup",stop);
+  canvas.addEventListener("touchstart",start,{passive:false});canvas.addEventListener("touchmove",move,{passive:false});canvas.addEventListener("touchend",stop);
+  var pen=document.getElementById(onPen),er=document.getElementById(onErase),cl=document.getElementById(onClear);
+  if(pen)pen.onclick=function(){mode="pen";pen.classList.add("active");if(er)er.classList.remove("active");};
+  if(er)er.onclick=function(){mode="erase";er.classList.add("active");if(pen)pen.classList.remove("active");};
+  if(cl)cl.onclick=function(){ctx.fillStyle="#1a1028";ctx.fillRect(0,0,canvas.width,canvas.height);};
+  document.querySelectorAll("["+colorAttr+"]").forEach(function(dot){dot.onclick=function(){clr=this.getAttribute(colorAttr);document.querySelectorAll("["+colorAttr+"]").forEach(function(d){d.classList.remove("active");});this.classList.add("active");};});
+  var sl=document.getElementById(sizeId);if(sl)sl.oninput=function(){sz=parseInt(this.value);};
+  ctx._reset=function(){ctx.fillStyle="#1a1028";ctx.fillRect(0,0,canvas.width,canvas.height);};
+  ctx._getData=function(){var b=document.createElement("canvas");b.width=canvas.width;b.height=canvas.height;var bc=b.getContext("2d");bc.fillStyle="#1a1028";bc.fillRect(0,0,b.width,b.height);return canvas.toDataURL()===b.toDataURL()?null:canvas.toDataURL();};
+  ctx._load=function(url){ctx.fillStyle="#1a1028";ctx.fillRect(0,0,canvas.width,canvas.height);if(!url)return;var img=new Image();img.onload=function(){ctx.drawImage(img,0,0,canvas.width,canvas.height);};img.src=url;};
+  return ctx;
 }
 
-function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-
-function load() {
-  try { var r = localStorage.getItem("mt-v1"); if(r) memories = JSON.parse(r); } catch(e){}
-  readOnly = sessionStorage.getItem("readonly") === "1";
-  buildEmoButtons();
-  buildConfidenceOpts();
-  wireButtons();
-  applyReadOnly();
-  renderAll();
+function initDraw(){dCtx=mkCanvas("draw-canvas","tool-pen","tool-erase","tool-clear","data-color","brush-size");}
+function initLib(){
+  lCtx=mkCanvas("lib-canvas","lib-pen","lib-erase","lib-clear","data-lcolor","lib-brush");
+  var lpi=document.getElementById("lib-photo-input");
+  if(lpi)lpi.onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){lPh=ev.target.result;document.getElementById("lib-photo-preview").innerHTML='<img src="'+lPh+'" style="width:100%;border-radius:0.4rem">';};r.readAsDataURL(f);e.target.value="";};
 }
 
-function applyReadOnly() {
-  var addBtn = document.getElementById("nav-add");
-  var exportBtn = document.getElementById("export-btn");
-  var importLabel = document.querySelector("label.btn-sm");
-  var searchBtn = document.getElementById("search-btn");
-  if(readOnly) {
-    addBtn.style.display = "none";
-    exportBtn.style.display = "none";
-    importLabel.style.display = "none";
-  } else {
-    addBtn.style.display = "";
-    exportBtn.style.display = "";
-    importLabel.style.display = "";
-  }
+function initPhotoGrid(){
+  var btn=document.getElementById("photo-add-btn");if(btn)btn.onclick=function(){document.getElementById("photo-input").click();};
+  var pi=document.getElementById("photo-input");
+  if(pi)pi.onchange=function(e){Array.from(e.target.files).forEach(function(f){var r=new FileReader();r.onload=function(ev){cPhotos.push(ev.target.result);renderPG();};r.readAsDataURL(f);});e.target.value="";};
+}
+function renderPG(){
+  var g=document.getElementById("photo-grid");if(!g)return;
+  var h="";
+  cPhotos.forEach(function(s,i){h+='<div class="photo-thumb"><img src="'+s+'" loading="lazy"><button class="photo-del" data-pi="'+i+'">×</button></div>';});
+  h+='<div class="photo-add" id="photo-add-btn">+</div>';
+  g.innerHTML=h;
+  var b=document.getElementById("photo-add-btn");if(b)b.onclick=function(){document.getElementById("photo-input").click();};
+  g.querySelectorAll("[data-pi]").forEach(function(btn){btn.onclick=function(e){e.stopPropagation();cPhotos.splice(parseInt(btn.dataset.pi),1);renderPG();};});
 }
 
-function saveData() { try { localStorage.setItem("mt-v1", JSON.stringify(memories)); } catch(e){} }
-
-function wireButtons() {
-  document.getElementById("nav-timeline").onclick = function(){ showView("timeline"); };
-  document.getElementById("nav-patterns").onclick = function(){ showView("patterns"); };
-  document.getElementById("nav-add").onclick = function(){ showView("add"); };
-  document.getElementById("back-btn").onclick = function(){ showView("timeline"); };
-  document.getElementById("btn-save").onclick = saveMemory;
-  document.getElementById("btn-cancel").onclick = function(){ showView("timeline"); };
-  document.getElementById("export-btn").onclick = exportMemories;
-  document.getElementById("import-file").onchange = importMemories;
-  document.getElementById("f-title").oninput = checkForm;
-  document.getElementById("f-content").oninput = checkForm;
-  document.getElementById("search-btn").onclick = function(){ showView("search"); document.getElementById("search-input").focus(); };
-  document.getElementById("search-input").oninput = renderSearch;
+function wireAll(){
+  document.getElementById("nav-timeline").onclick=function(){showV("timeline");};
+  document.getElementById("nav-patterns").onclick=function(){showV("patterns");};
+  document.getElementById("nav-library").onclick=function(){showV("library");};
+  document.getElementById("nav-add").onclick=function(){showV("add");};
+  document.getElementById("back-btn").onclick=function(){showV("timeline");};
+  document.getElementById("btn-save").onclick=saveMem;
+  document.getElementById("btn-cancel").onclick=function(){showV("timeline");};
+  document.getElementById("export-btn").onclick=expMems;
+  document.getElementById("import-file").onchange=impMems;
+  document.getElementById("f-title").oninput=chkForm;
+  document.getElementById("f-content").oninput=chkForm;
+  document.getElementById("search-btn").onclick=function(){showV("search");document.getElementById("search-input").focus();};
+  document.getElementById("search-input").oninput=renderSearch;
+  document.getElementById("lib-save-btn").onclick=saveLibItem;
+  initPhotoGrid();
 }
 
-function showView(v) {
-  document.querySelectorAll(".view").forEach(function(el){ el.classList.remove("active"); });
-  document.querySelectorAll(".nav-btn").forEach(function(el){ el.classList.remove("active"); });
+function showV(v){
+  document.querySelectorAll(".view").forEach(function(el){el.classList.remove("active");});
+  document.querySelectorAll(".nav-btn").forEach(function(el){el.classList.remove("active");});
   document.getElementById("view-"+v).classList.add("active");
-  var navBtn = document.getElementById("nav-"+v);
-  if(navBtn) navBtn.classList.add("active");
-  if(v==="add" && !editingId) resetForm();
-  if(v==="patterns") renderPatterns();
-  if(v==="timeline") renderTimeline();
-  if(v==="search") renderSearch();
+  var nb=document.getElementById("nav-"+v);if(nb)nb.classList.add("active");
+  if(v==="add"&&!editId)resetForm();
+  if(v==="patterns")renderPat();
+  if(v==="timeline")renderTL();
+  if(v==="search")renderSearch();
+  if(v==="library")renderLib();
+  if(v==="add")setTimeout(function(){if(!dCtx)initDraw();},150);
+  if(v==="library")setTimeout(function(){if(!lCtx)initLib();},150);
 }
 
-function renderSearch() {
-  var q = (document.getElementById("search-input").value||"").trim().toLowerCase();
-  var el = document.getElementById("search-results");
-  if(!q) { el.innerHTML = '<p style="color:#6a5a80;font-size:0.85rem">Type to search across all memories.</p>'; return; }
-  var results = memories.filter(function(m){
-    return [m.title,m.content,m.sensoryDetails,m.trigger,m.recurringTheme,m.people,m.lifeStage].some(function(f){
-      return f && f.toLowerCase().indexOf(q)>-1;
-    }) || (m.emotions||[]).some(function(e){ return e.toLowerCase().indexOf(q)>-1; });
-  });
-  if(!results.length) { el.innerHTML = '<p style="color:#6a5a80;font-size:0.85rem">No memories found for "'+esc(q)+'".</p>'; return; }
-  var html = '<p style="color:#6a5a80;font-size:0.78rem;margin-bottom:0.75rem">'+results.length+' result'+(results.length===1?'':'s')+'</p>';
-  results.forEach(function(m){
-    var dc = CC[m.confidence]||"#4a3f6b";
-    html += '<div class="card" style="margin-bottom:0.85rem" data-sid="'+m.id+'">';
-    html += '<div class="card-meta">'+(m.lifeStage||'')+(m.approximateAge?' · ~'+m.approximateAge:'')+'</div>';
-    html += '<div class="card-title">'+highlight(esc(m.title),q)+'</div>';
-    html += '<div class="card-preview">'+highlight(esc(m.content),q)+'</div>';
-    html += '<div class="tags">';
-    (m.emotions||[]).forEach(function(e){ html += '<span class="tag" style="background:rgba('+hexToRgb(EC[e])+',0.15);color:'+EC[e]+';border:1px solid rgba('+hexToRgb(EC[e])+',0.4)">'+e+'</span>'; });
-    parseTags(m.people).forEach(function(p){ html += '<span class="tag" style="background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>'; });
-    html += '</div></div>';
-  });
-  el.innerHTML = html;
-  document.querySelectorAll("[data-sid]").forEach(function(card){
-    card.onclick = function(){ showDetail(card.dataset.sid); };
+function renderAll(){
+  document.getElementById("memory-count").textContent=mems.length+(mems.length===1?" memory":" memories");
+  renderTL();
+}
+
+function srtMems(list){
+  return list.slice().sort(function(a,b){
+    var si=STAGES.indexOf(a.lifeStage)-STAGES.indexOf(b.lifeStage);
+    if(si!==0)return si;
+    return pAge(a.approximateAge)-pAge(b.approximateAge);
   });
 }
 
-function highlight(text, q) {
-  if(!q) return text;
-  var re = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
-  return text.replace(re,'<mark style="background:rgba(176,143,212,0.35);color:#e8e0f0;border-radius:2px">$1</mark>');
-}
+function renderTL(){
+  var sorted=srtMems(mems);
+  var filt=sorted;
+  if(fEmo)filt=filt.filter(function(m){return pt(m.emotions).map(function(e){return e.toLowerCase();}).indexOf(fEmo.toLowerCase())>-1;});
+  if(fPer)filt=filt.filter(function(m){return pt(m.people).indexOf(fPer)>-1;});
 
-function renderAll() {
-  document.getElementById("memory-count").textContent = memories.length + (memories.length===1?" memory":" memories");
-  renderTimeline();
-}
+  var eCnts={};
+  mems.forEach(function(m){pt(m.emotions).forEach(function(e){eCnts[e]=(eCnts[e]||0)+1;});});
+  var chips='<button class="tag" style="background:'+(!fEmo?'rgba(176,143,212,0.2)':'rgba(255,255,255,0.05)')+';color:'+(!fEmo?'#e8e0f0':'#6a5a80')+';border:1px solid '+(!fEmo?'#b08fd4':'rgba(176,143,212,0.2)')+';cursor:pointer;margin-bottom:0.3rem" id="fa">All</button> ';
+  Object.keys(eCnts).sort().forEach(function(e){var on=fEmo&&fEmo.toLowerCase()===e.toLowerCase();var c=ec(e);chips+='<button class="tag" style="background:'+(on?'rgba('+rgb(c)+',0.18)':'rgba(255,255,255,0.03)')+';color:'+(on?c:'#6a5a80')+';border:1px solid '+(on?c:'rgba(176,143,212,0.15)')+';cursor:pointer;margin-bottom:0.3rem" data-emo="'+esc(e)+'">'+esc(e)+' ('+eCnts[e]+')</button> ';});
+  document.getElementById("filter-chips").innerHTML=chips;
+  document.getElementById("fa").onclick=function(){fEmo=null;renderTL();};
+  document.querySelectorAll("[data-emo]").forEach(function(b){b.onclick=function(){fEmo=fEmo===b.dataset.emo?null:b.dataset.emo;renderTL();};});
 
-function renderTimeline() {
-  var sorted = memories.slice().sort(function(a,b){ return STAGES.indexOf(a.lifeStage)-STAGES.indexOf(b.lifeStage); });
-  var filtered = sorted;
-  if(filterEmotion) filtered = filtered.filter(function(m){ return m.emotions && m.emotions.indexOf(filterEmotion)>-1; });
-  if(filterPerson) filtered = filtered.filter(function(m){ return parseTags(m.people).indexOf(filterPerson)>-1; });
-
-  var counts = {};
-  memories.forEach(function(m){ (m.emotions||[]).forEach(function(e){ counts[e]=(counts[e]||0)+1; }); });
-  var chips = '<button class="tag" style="background:'+(!filterEmotion?'rgba(176,143,212,0.2)':'rgba(255,255,255,0.05)')+';color:'+(!filterEmotion?'#e8e0f0':'#6a5a80')+';border:1px solid '+(!filterEmotion?'#b08fd4':'rgba(176,143,212,0.2)')+';cursor:pointer;margin-bottom:0.3rem" id="filter-all">All</button> ';
-  EMOTIONS.filter(function(e){ return counts[e]; }).forEach(function(e){
-    var on = filterEmotion===e;
-    chips += '<button class="tag" style="background:'+(on?'rgba('+hexToRgb(EC[e])+',0.18)':'rgba(255,255,255,0.03)')+';color:'+(on?EC[e]:'#6a5a80')+';border:1px solid '+(on?EC[e]:'rgba(176,143,212,0.15)')+';cursor:pointer;margin-bottom:0.3rem" data-emo="'+e+'">'+e+' ('+counts[e]+')</button> ';
-  });
-  document.getElementById("filter-chips").innerHTML = chips;
-  document.getElementById("filter-all").onclick = function(){ filterEmotion=null; renderTimeline(); };
-  document.querySelectorAll("[data-emo]").forEach(function(btn){
-    btn.onclick = function(){ filterEmotion = filterEmotion===btn.dataset.emo?null:btn.dataset.emo; renderTimeline(); };
-  });
-
-  var peopleCounts = {};
-  memories.forEach(function(m){ parseTags(m.people).forEach(function(p){ peopleCounts[p]=(peopleCounts[p]||0)+1; }); });
-  var peopleList = Object.keys(peopleCounts).sort();
-  var pHtml = "";
-  if(peopleList.length) {
-    pHtml = '<div class="filter-label" style="margin-top:0.75rem">Filter by person</div><div class="tags">';
-    pHtml += '<button class="tag" style="background:'+(!filterPerson?'rgba(176,143,212,0.2)':'rgba(255,255,255,0.05)')+';color:'+(!filterPerson?'#e8e0f0':'#6a5a80')+';border:1px solid '+(!filterPerson?'#b08fd4':'rgba(176,143,212,0.2)')+';cursor:pointer;margin-bottom:0.3rem" id="person-all">All</button> ';
-    peopleList.forEach(function(p){
-      var on = filterPerson===p;
-      pHtml += '<button class="tag" style="background:'+(on?'rgba(232,199,126,0.18)':'rgba(255,255,255,0.03)')+';color:'+(on?'#e8c97e':'#6a5a80')+';border:1px solid '+(on?'#e8c97e':'rgba(176,143,212,0.15)')+';cursor:pointer;margin-bottom:0.3rem" data-person="'+esc(p)+'">'+esc(p)+' ('+peopleCounts[p]+')</button> ';
-    });
-    pHtml += '</div>';
+  var pCnts={};
+  mems.forEach(function(m){pt(m.people).forEach(function(p){pCnts[p]=(pCnts[p]||0)+1;});});
+  var pl=Object.keys(pCnts).sort(),pH="";
+  if(pl.length){
+    pH='<div class="filter-label" style="margin-top:0.75rem">Filter by person</div><div class="tags"><button class="tag" style="background:'+(!fPer?'rgba(176,143,212,0.2)':'rgba(255,255,255,0.05)')+';color:'+(!fPer?'#e8e0f0':'#6a5a80')+';border:1px solid '+(!fPer?'#b08fd4':'rgba(176,143,212,0.2)')+';cursor:pointer;margin-bottom:0.3rem" id="pa">All</button> ';
+    pl.forEach(function(p){var on=fPer===p;pH+='<button class="tag" style="background:'+(on?'rgba(232,199,126,0.18)':'rgba(255,255,255,0.03)')+';color:'+(on?'#e8c97e':'#6a5a80')+';border:1px solid '+(on?'#e8c97e':'rgba(176,143,212,0.15)')+';cursor:pointer;margin-bottom:0.3rem" data-per="'+esc(p)+'">'+esc(p)+' ('+pCnts[p]+')</button> ';});
+    pH+='</div>';
   }
-  document.getElementById("people-filter").innerHTML = pHtml;
-  var pa = document.getElementById("person-all");
-  if(pa) pa.onclick = function(){ filterPerson=null; renderTimeline(); };
-  document.querySelectorAll("[data-person]").forEach(function(btn){
-    btn.onclick = function(){ filterPerson = filterPerson===btn.dataset.person?null:btn.dataset.person; renderTimeline(); };
+  document.getElementById("people-filter").innerHTML=pH;
+  var pa=document.getElementById("pa");if(pa)pa.onclick=function(){fPer=null;renderTL();};
+  document.querySelectorAll("[data-per]").forEach(function(b){b.onclick=function(){fPer=fPer===b.dataset.per?null:b.dataset.per;renderTL();};});
+
+  if(!filt.length){document.getElementById("timeline-list").innerHTML='<div class="empty"><div class="empty-icon">◎</div><p>'+(fEmo||fPer?'No memories match this filter.':'No memories yet.')+'<br><span style="font-size:0.8rem">Tap + Add below to begin.</span></p></div>';return;}
+  var h="";
+  filt.forEach(function(m,i){
+    var dc=CC[m.confidence]||"#4a3f6b",hM=m.drawing||(m.photos&&m.photos.length);
+    h+='<div class="tl-item"><div class="tl-spine"><div class="tl-dot" style="background:'+dc+';box-shadow:0 0 6px '+dc+'"></div>'+(i<filt.length-1?'<div class="tl-line"></div>':'')+'</div>';
+    h+='<div class="card" data-id="'+m.id+'"><div class="card-meta">'+(m.lifeStage||'')+(m.approximateAge?' · ~'+m.approximateAge:'')+(hM?' · <span style="color:#b08fd4">✎</span>':'')+'</div>';
+    h+='<div class="card-title">'+esc(m.title)+'</div><div class="card-preview">'+esc(m.content)+'</div>';
+    h+='<div class="tags">';
+    pt(m.emotions).forEach(function(e){var c=ec(e);h+='<span class="tag" style="background:rgba('+rgb(c)+',0.15);color:'+c+';border:1px solid rgba('+rgb(c)+',0.4)">'+esc(e)+'</span>';});
+    pt(m.people).forEach(function(p){h+='<span class="tag" style="background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>';});
+    if(m.confidence)h+='<span class="tag" style="background:rgba('+rgb(dc)+',0.12);color:'+dc+';border:1px solid rgba('+rgb(dc)+',0.35);margin-left:auto">'+m.confidence+'</span>';
+    h+='</div></div></div>';
   });
-
-  if(!filtered.length) {
-    document.getElementById("timeline-list").innerHTML = '<div class="empty"><div class="empty-icon">◎</div><p>'+(filterEmotion||filterPerson?'No memories match this filter.':'No memories yet.')+'<br><span style="font-size:0.8rem">Tap + Add below to begin.</span></p></div>';
-    return;
-  }
-
-  var html = "";
-  filtered.forEach(function(m,i){
-    var dc = CC[m.confidence]||"#4a3f6b";
-    html += '<div class="tl-item"><div class="tl-spine"><div class="tl-dot" style="background:'+dc+';box-shadow:0 0 6px '+dc+'"></div>'+(i<filtered.length-1?'<div class="tl-line"></div>':'')+'</div>';
-    html += '<div class="card" data-id="'+m.id+'">';
-    html += '<div class="card-meta">'+(m.lifeStage||'')+(m.approximateAge?' · ~'+m.approximateAge:'')+'</div>';
-    html += '<div class="card-title">'+esc(m.title)+'</div>';
-    html += '<div class="card-preview">'+esc(m.content)+'</div>';
-    html += '<div class="tags">';
-    (m.emotions||[]).forEach(function(e){ html += '<span class="tag" style="background:rgba('+hexToRgb(EC[e])+',0.15);color:'+EC[e]+';border:1px solid rgba('+hexToRgb(EC[e])+',0.4)">'+e+'</span>'; });
-    parseTags(m.people).forEach(function(p){ html += '<span class="tag" style="background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>'; });
-    if(m.confidence) html += '<span class="tag" style="background:rgba('+hexToRgb(dc)+',0.12);color:'+dc+';border:1px solid rgba('+hexToRgb(dc)+',0.35);margin-left:auto">'+m.confidence+'</span>';
-    html += '</div></div></div>';
-  });
-  document.getElementById("timeline-list").innerHTML = html;
-  document.querySelectorAll(".card[data-id]").forEach(function(card){
-    card.onclick = function(){ showDetail(card.dataset.id); };
-  });
+  document.getElementById("timeline-list").innerHTML=h;
+  document.querySelectorAll(".card[data-id]").forEach(function(c){c.onclick=function(){showDetail(c.dataset.id);};});
 }
 
-function hexToRgb(hex) {
-  var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return r+","+g+","+b;
+function showDetail(id){
+  var m=mems.find(function(x){return x.id===id;});if(!m)return;
+  var dc=CC[m.confidence]||"#4a3f6b";
+  var h='<div class="sec"><div class="sec-label">'+(m.lifeStage||'')+(m.approximateAge?' · Age ~'+m.approximateAge:'')+'</div><div style="font-size:1.2rem;font-weight:normal;color:#e8e0f0">'+esc(m.title)+'</div></div>';
+  h+='<div class="sec"><div class="sec-label">Memory</div><div class="sec-body">'+esc(m.content)+'</div></div>';
+  if(m.sensoryDetails)h+='<div class="sec"><div class="sec-label">Sensory Details</div><div class="sec-body">'+esc(m.sensoryDetails)+'</div></div>';
+  if(pt(m.emotions).length){h+='<div class="sec"><div class="sec-label">Emotions</div><div class="tags">';pt(m.emotions).forEach(function(e){var c=ec(e);h+='<span class="tag" style="padding:0.3rem 0.7rem;background:rgba('+rgb(c)+',0.18);color:'+c+';border:1px solid rgba('+rgb(c)+',0.4)">'+esc(e)+'</span>';});h+='</div></div>';}
+  if(pt(m.people).length){h+='<div class="sec"><div class="sec-label">People</div><div class="tags">';pt(m.people).forEach(function(p){h+='<span class="tag" style="padding:0.3rem 0.7rem;background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>';});h+='</div></div>';}
+  if(m.trigger)h+='<div class="sec"><div class="sec-label">Trigger</div><div class="sec-body">'+esc(m.trigger)+'</div></div>';
+  if(pt(m.recurringTheme).length){h+='<div class="sec"><div class="sec-label">Recurring Themes</div><div class="tags">';pt(m.recurringTheme).forEach(function(t){h+='<span class="tag" style="padding:0.3rem 0.7rem;background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t)+'</span>';});h+='</div></div>';}
+  if(m.confidence)h+='<div class="sec"><div class="sec-label">Confidence</div><div class="sec-body" style="color:'+dc+'">'+m.confidence+'</div></div>';
+  if(m.drawing)h+='<div class="sec"><div class="sec-label">Spatial Drawing</div><img class="detail-img" src="'+m.drawing+'"></div>';
+  if(m.photos&&m.photos.length){h+='<div class="sec"><div class="sec-label">Photos</div>';m.photos.forEach(function(s){h+='<img class="detail-img" src="'+s+'" loading="lazy">';});h+='</div>';}
+  h+='<div class="detail-actions">';
+  if(!ro)h+='<button class="btn-edit" data-ed="'+id+'">Edit</button><button class="btn-del" data-dl="'+id+'">Delete</button>';
+  h+='</div>';
+  document.getElementById("detail-content").innerHTML=h;
+  if(!ro){document.querySelector("[data-ed]").onclick=function(){startEdit(id);};document.querySelector("[data-dl]").onclick=function(){delMem(id);};}
+  showV("detail");
 }
 
-function showDetail(id) {
-  var m = memories.find(function(x){ return x.id===id; });
-  if(!m) return;
-  var dc = CC[m.confidence]||"#4a3f6b";
-  var html = '<div class="sec"><div class="sec-label">'+(m.lifeStage||'')+(m.approximateAge?' · Age ~'+m.approximateAge:'')+'</div><div style="font-size:1.2rem;font-weight:normal;color:#e8e0f0">'+esc(m.title)+'</div></div>';
-  html += '<div class="sec"><div class="sec-label">Memory</div><div class="sec-body">'+esc(m.content)+'</div></div>';
-  if(m.sensoryDetails) html += '<div class="sec"><div class="sec-label">Sensory Details</div><div class="sec-body">'+esc(m.sensoryDetails)+'</div></div>';
-  if(m.emotions&&m.emotions.length) { html += '<div class="sec"><div class="sec-label">Emotions</div><div class="tags">'; m.emotions.forEach(function(e){ html += '<span class="tag" style="padding:0.3rem 0.7rem;background:rgba('+hexToRgb(EC[e])+',0.18);color:'+EC[e]+';border:1px solid rgba('+hexToRgb(EC[e])+',0.4)">'+e+'</span>'; }); html += '</div></div>'; }
-  if(parseTags(m.people).length) { html += '<div class="sec"><div class="sec-label">People</div><div class="tags">'; parseTags(m.people).forEach(function(p){ html += '<span class="tag" style="padding:0.3rem 0.7rem;background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>'; }); html += '</div></div>'; }
-  if(m.trigger) html += '<div class="sec"><div class="sec-label">Trigger</div><div class="sec-body">'+esc(m.trigger)+'</div></div>';
-  if(parseTags(m.recurringTheme).length) { html += '<div class="sec"><div class="sec-label">Recurring Themes</div><div class="tags">'; parseTags(m.recurringTheme).forEach(function(t){ html += '<span class="tag" style="padding:0.3rem 0.7rem;background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t)+'</span>'; }); html += '</div></div>'; }
-  if(m.confidence) html += '<div class="sec"><div class="sec-label">Confidence</div><div class="sec-body" style="color:'+dc+'">'+m.confidence+'</div></div>';
-  html += '<div class="detail-actions">';
-  if(!readOnly) {
-    html += '<button class="btn-edit" data-edit="'+id+'">Edit</button><button class="btn-del" data-del="'+id+'">Delete</button>';
-  }
-  html += '</div>';
-  document.getElementById("detail-content").innerHTML = html;
-  document.querySelector("[data-edit]").onclick = function(){ startEdit(id); };
-  document.querySelector("[data-del]").onclick = function(){ deleteMemory(id); };
-  showView("detail");
+function startEdit(id){
+  var m=mems.find(function(x){return x.id===id;});if(!m)return;
+  editId=id;selConf=m.confidence||"";cPhotos=(m.photos||[]).slice();
+  document.getElementById("f-title").value=m.title||"";
+  document.getElementById("f-content").value=m.content||"";
+  document.getElementById("f-sensory").value=m.sensoryDetails||"";
+  document.getElementById("f-stage").value=m.lifeStage||"";
+  document.getElementById("f-age").value=m.approximateAge||"";
+  document.getElementById("f-emotions").value=Array.isArray(m.emotions)?m.emotions.join(", "):(m.emotions||"");
+  document.getElementById("f-people").value=m.people||"";
+  document.getElementById("f-trigger").value=m.trigger||"";
+  document.getElementById("f-theme").value=m.recurringTheme||"";
+  document.getElementById("form-mode-label").textContent="Edit Memory";
+  document.getElementById("form-title-label").textContent="Update this memory";
+  document.getElementById("btn-save").textContent="Update Memory";
+  rfConf();chkForm();showV("add");
+  setTimeout(function(){if(dCtx)dCtx._load(m.drawing||null);renderPG();},150);
 }
 
-function startEdit(id) {
-  var m = memories.find(function(x){ return x.id===id; });
-  if(!m) return;
-  editingId = id;
-  selectedEmotions = (m.emotions||[]).slice();
-  selectedConfidence = m.confidence||"";
-  document.getElementById("f-title").value = m.title||"";
-  document.getElementById("f-content").value = m.content||"";
-  document.getElementById("f-sensory").value = m.sensoryDetails||"";
-  document.getElementById("f-stage").value = m.lifeStage||"";
-  document.getElementById("f-age").value = m.approximateAge||"";
-  document.getElementById("f-people").value = m.people||"";
-  document.getElementById("f-trigger").value = m.trigger||"";
-  document.getElementById("f-theme").value = m.recurringTheme||"";
-  document.getElementById("form-mode-label").textContent = "Edit Memory";
-  document.getElementById("form-title-label").textContent = "Update this memory";
-  document.getElementById("btn-save").textContent = "Update Memory";
-  refreshEmoButtons();
-  refreshConfidence();
-  checkForm();
-  showView("add");
+function buildConf(){
+  document.getElementById("confidence-opts").innerHTML=CONF.map(function(c){return'<div class="radio-row" data-conf="'+c+'"><div class="radio-dot" style="--dc:'+CC[c]+'"></div><span class="radio-text">'+c+'</span></div>';}).join("");
+  document.querySelectorAll("[data-conf]").forEach(function(r){r.onclick=function(){selConf=r.dataset.conf;rfConf();};});
+}
+function rfConf(){document.querySelectorAll("[data-conf]").forEach(function(r){var on=r.dataset.conf===selConf;r.querySelector(".radio-dot").classList.toggle("on",on);r.querySelector(".radio-text").classList.toggle("on",on);});}
+function chkForm(){var t=document.getElementById("f-title").value.trim(),c=document.getElementById("f-content").value.trim();document.getElementById("btn-save").disabled=!t||!c;}
+
+function resetForm(){
+  editId=null;selConf="";cPhotos=[];
+  ["f-title","f-content","f-sensory","f-age","f-trigger","f-theme","f-people","f-emotions"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
+  var fs=document.getElementById("f-stage");if(fs)fs.value="";
+  document.getElementById("form-mode-label").textContent="New Memory";
+  document.getElementById("form-title-label").textContent="Record a returning memory";
+  document.getElementById("btn-save").textContent="Save Memory";
+  rfConf();document.getElementById("btn-save").disabled=true;
+  renderPG();
+  setTimeout(function(){if(dCtx)dCtx._reset();},100);
 }
 
-function buildEmoButtons() {
-  document.getElementById("emo-btns").innerHTML = EMOTIONS.map(function(e){
-    return '<button class="emo-btn" style="--c:'+EC[e]+'" data-emo2="'+e+'">'+e+'</button>';
-  }).join("");
-  document.querySelectorAll("[data-emo2]").forEach(function(btn){
-    btn.onclick = function(){
-      var e = btn.dataset.emo2;
-      var idx = selectedEmotions.indexOf(e);
-      if(idx>-1) selectedEmotions.splice(idx,1); else selectedEmotions.push(e);
-      refreshEmoButtons();
-    };
-  });
-}
-
-function refreshEmoButtons() {
-  document.querySelectorAll("[data-emo2]").forEach(function(btn){
-    btn.classList.toggle("on", selectedEmotions.indexOf(btn.dataset.emo2)>-1);
-  });
-}
-
-function buildConfidenceOpts() {
-  document.getElementById("confidence-opts").innerHTML = CONFIDENCE.map(function(c){
-    return '<div class="radio-row" data-conf="'+c+'"><div class="radio-dot" style="--dc:'+CC[c]+'"></div><span class="radio-text">'+c+'</span></div>';
-  }).join("");
-  document.querySelectorAll("[data-conf]").forEach(function(row){
-    row.onclick = function(){ selectedConfidence = row.dataset.conf; refreshConfidence(); };
-  });
-}
-
-function refreshConfidence() {
-  document.querySelectorAll("[data-conf]").forEach(function(row){
-    var on = row.dataset.conf === selectedConfidence;
-    row.querySelector(".radio-dot").classList.toggle("on", on);
-    row.querySelector(".radio-text").classList.toggle("on", on);
-  });
-}
-
-function checkForm() {
-  var t = document.getElementById("f-title").value.trim();
-  var c = document.getElementById("f-content").value.trim();
-  document.getElementById("btn-save").disabled = !t||!c;
-}
-
-function resetForm() {
-  editingId = null; selectedEmotions = []; selectedConfidence = "";
-  ["f-title","f-content","f-sensory","f-age","f-trigger","f-theme","f-people"].forEach(function(id){ document.getElementById(id).value=""; });
-  document.getElementById("f-stage").value = "";
-  document.getElementById("form-mode-label").textContent = "New Memory";
-  document.getElementById("form-title-label").textContent = "Record a returning memory";
-  document.getElementById("btn-save").textContent = "Save Memory";
-  refreshEmoButtons(); refreshConfidence();
-  document.getElementById("btn-save").disabled = true;
-}
-
-function saveMemory() {
-  var title = document.getElementById("f-title").value.trim();
-  var content = document.getElementById("f-content").value.trim();
-  if(!title||!content) return;
-  var memory = {
-    id: editingId||Date.now().toString(),
-    title:title, content:content,
-    sensoryDetails: document.getElementById("f-sensory").value.trim(),
-    lifeStage: document.getElementById("f-stage").value,
-    approximateAge: document.getElementById("f-age").value.trim(),
-    people: document.getElementById("f-people").value.trim(),
-    emotions: selectedEmotions.slice(),
-    trigger: document.getElementById("f-trigger").value.trim(),
-    recurringTheme: document.getElementById("f-theme").value.trim(),
-    confidence: selectedConfidence,
-    updatedAt: new Date().toISOString(),
-    createdAt: editingId ? (memories.find(function(m){ return m.id===editingId; })||{}).createdAt : new Date().toISOString()
+function saveMem(){
+  var title=document.getElementById("f-title").value.trim(),content=document.getElementById("f-content").value.trim();
+  if(!title||!content)return;
+  var mem={
+    id:editId||Date.now().toString(),title:title,content:content,
+    sensoryDetails:document.getElementById("f-sensory").value.trim(),
+    lifeStage:document.getElementById("f-stage").value,
+    approximateAge:document.getElementById("f-age").value.trim(),
+    emotions:pt(document.getElementById("f-emotions").value),
+    people:document.getElementById("f-people").value.trim(),
+    trigger:document.getElementById("f-trigger").value.trim(),
+    recurringTheme:document.getElementById("f-theme").value.trim(),
+    confidence:selConf,
+    drawing:dCtx?dCtx._getData():null,
+    photos:cPhotos.slice(),
+    updatedAt:new Date().toISOString(),
+    createdAt:editId?(mems.find(function(m){return m.id===editId;})||{}).createdAt:new Date().toISOString()
   };
-  if(editingId) { memories = memories.map(function(m){ return m.id===editingId?memory:m; }); }
-  else { memories.push(memory); }
-  saveData(); editingId=null; renderAll(); showView("timeline");
+  if(editId)mems=mems.map(function(m){return m.id===editId?mem:m;});else mems.push(mem);
+  svMems();editId=null;renderAll();showV("timeline");
 }
 
-function deleteMemory(id) {
-  if(!confirm("Delete this memory?")) return;
-  memories = memories.filter(function(m){ return m.id!==id; });
-  saveData(); renderAll(); showView("timeline");
+function delMem(id){
+  if(!confirm("Delete this memory?"))return;
+  mems=mems.filter(function(m){return m.id!==id;});
+  svMems();renderAll();showV("timeline");
 }
 
-function renderPatterns() {
-  var el = document.getElementById("patterns-content");
-  if(memories.length < 2) { el.innerHTML='<div class="empty"><div class="empty-icon">◎</div><p>Add at least 2 memories to see patterns.</p></div>'; return; }
-  var ec={},tc={};
-  memories.forEach(function(m){
-    (m.emotions||[]).forEach(function(e){ ec[e]=(ec[e]||0)+1; });
-    parseTags(m.recurringTheme).forEach(function(t){ var k=t.toLowerCase(); tc[k]=(tc[k]||0)+1; });
+function saveLibItem(){
+  var title=document.getElementById("lib-title").value.trim();
+  var notes=document.getElementById("lib-notes").value.trim();
+  var drawing=lCtx?lCtx._getData():null;
+  if(!title&&!drawing&&!lPh){alert("Please add a title, sketch, or image.");return;}
+  lib.push({id:Date.now().toString(),title:title||"Untitled",notes:notes,drawing:drawing,photo:lPh,createdAt:new Date().toISOString()});
+  svLib();
+  document.getElementById("lib-title").value="";document.getElementById("lib-notes").value="";
+  lPh=null;document.getElementById("lib-photo-preview").innerHTML="";
+  if(lCtx)lCtx._reset();
+  renderLib();
+}
+
+function renderLib(){
+  var el=document.getElementById("lib-items");if(!el)return;
+  if(!lib.length){el.innerHTML='<div class="empty"><div class="empty-icon">◎</div><p>No library items yet.<br><span style="font-size:0.8rem">Add floor plans and shared images below.</span></p></div>';return;}
+  var h="";
+  lib.forEach(function(item){
+    h+='<div class="lib-item"><div style="font-size:0.95rem;color:#e8e0f0;margin-bottom:0.25rem">'+esc(item.title)+'</div>';
+    if(item.notes)h+='<div style="font-size:0.78rem;color:#6a5a80;margin-bottom:0.6rem">'+esc(item.notes)+'</div>';
+    if(item.drawing)h+='<img src="'+item.drawing+'" style="width:100%;border-radius:0.4rem;margin-bottom:0.5rem">';
+    if(item.photo)h+='<img src="'+item.photo+'" style="width:100%;border-radius:0.4rem;margin-bottom:0.5rem">';
+    if(!ro)h+='<button class="lib-del" data-lid="'+item.id+'">Delete</button>';
+    h+='</div>';
   });
-  var total = memories.length;
-  var html = '<div class="p-card"><div class="p-title">Emotional Frequency</div>';
-  Object.entries(ec).sort(function(a,b){ return b[1]-a[1]; }).forEach(function(e){ html+='<div class="bar-row"><div class="bar-label" style="color:'+EC[e[0]]+'">'+e[0]+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(e[1]/total*100)+'%;background:'+EC[e[0]]+'"></div></div><div class="bar-n">'+e[1]+'</div></div>'; });
-  html += '</div><div class="p-card"><div class="p-title">Life Stage Distribution</div>';
-  STAGES.forEach(function(s){ var c=memories.filter(function(m){ return m.lifeStage===s; }).length; if(!c) return; html+='<div class="bar-row"><div class="bar-label" style="color:#a090c0;font-size:0.68rem;width:130px">'+s+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(c/total*100)+'%;background:rgba(176,143,212,0.6)"></div></div><div class="bar-n">'+c+'</div></div>'; });
-  html += '</div>';
-  var themes = Object.entries(tc).sort(function(a,b){ return b[1]-a[1]; }).slice(0,8);
-  if(themes.length){ html+='<div class="p-card"><div class="p-title">Recurring Themes</div><div class="tags">'; themes.forEach(function(t){ html+='<span class="tag" style="padding:0.3rem 0.7rem;background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t[0])+(t[1]>1?' ×'+t[1]:'')+' </span>'; }); html+='</div></div>'; }
-  var gaps = STAGES.filter(function(s){ return s!=="Uncertain"&&!memories.find(function(m){ return m.lifeStage===s; }); });
-  html+='<div class="p-card"><div class="p-title">Memory Gaps</div>';
-  if(!gaps.length) html+='<p style="color:#6a5a80;font-size:0.82rem">All life stages represented.</p>';
-  else gaps.forEach(function(s){ html+='<div style="font-size:0.8rem;color:#6a5a80;margin-bottom:0.3rem">◦ '+s+'</div>'; });
-  html+='</div>';
+  el.innerHTML=h;
+  document.querySelectorAll("[data-lid]").forEach(function(b){b.onclick=function(){lib=lib.filter(function(i){return i.id!==b.dataset.lid;});svLib();renderLib();};});
+}
 
-  // People patterns
-  var peopleMems = memories.filter(function(m){ return parseTags(m.people).length > 0; });
-  if(peopleMems.length) {
-    var personData = {};
-    peopleMems.forEach(function(m){
-      parseTags(m.people).forEach(function(p){
-        if(!personData[p]) personData[p] = { count:0, themes:{}, emotions:{} };
-        personData[p].count++;
-        parseTags(m.recurringTheme).forEach(function(t){ personData[p].themes[t]=(personData[p].themes[t]||0)+1; });
-        (m.emotions||[]).forEach(function(e){ personData[p].emotions[e]=(personData[p].emotions[e]||0)+1; });
-      });
+function renderSearch(){
+  var q=(document.getElementById("search-input").value||"").trim().toLowerCase();
+  var el=document.getElementById("search-results");
+  if(!q){el.innerHTML='<p style="color:#6a5a80;font-size:0.85rem">Type to search across all memories.</p>';return;}
+  var res=mems.filter(function(m){
+    return[m.title,m.content,m.sensoryDetails,m.trigger,m.recurringTheme,m.people,m.lifeStage].some(function(f){return f&&f.toLowerCase().indexOf(q)>-1;})||
+    pt(m.emotions).some(function(e){return e.toLowerCase().indexOf(q)>-1;});
+  });
+  if(!res.length){el.innerHTML='<p style="color:#6a5a80;font-size:0.85rem">No results for "'+esc(q)+'".</p>';return;}
+  var h='<p style="color:#6a5a80;font-size:0.78rem;margin-bottom:0.75rem">'+res.length+' result'+(res.length===1?'':'s')+'</p>';
+  res.forEach(function(m){
+    h+='<div class="card" style="margin-bottom:0.85rem" data-sid="'+m.id+'">';
+    h+='<div class="card-meta">'+(m.lifeStage||'')+(m.approximateAge?' · ~'+m.approximateAge:'')+'</div>';
+    h+='<div class="card-title">'+hl(esc(m.title),q)+'</div>';
+    h+='<div class="card-preview">'+hl(esc(m.content),q)+'</div>';
+    h+='<div class="tags">';
+    pt(m.emotions).forEach(function(e){var c=ec(e);h+='<span class="tag" style="background:rgba('+rgb(c)+',0.15);color:'+c+';border:1px solid rgba('+rgb(c)+',0.4)">'+esc(e)+'</span>';});
+    pt(m.people).forEach(function(p){h+='<span class="tag" style="background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>';});
+    h+='</div></div>';
+  });
+  el.innerHTML=h;
+  document.querySelectorAll("[data-sid]").forEach(function(c){c.onclick=function(){showDetail(c.dataset.sid);};});
+}
+function hl(t,q){var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');return t.replace(re,'<mark style="background:rgba(176,143,212,0.35);color:#e8e0f0;border-radius:2px">$1</mark>');}
+
+function renderPat(){
+  var el=document.getElementById("patterns-content");
+  if(mems.length<2){el.innerHTML='<div class="empty"><div class="empty-icon">◎</div><p>Add at least 2 memories to see patterns.</p></div>';return;}
+  var eC={},tC={};
+  mems.forEach(function(m){pt(m.emotions).forEach(function(e){eC[e]=(eC[e]||0)+1;});pt(m.recurringTheme).forEach(function(t){var k=t.toLowerCase();tC[k]=(tC[k]||0)+1;});});
+  var tot=mems.length;
+  var h='<div class="p-card"><div class="p-title">Emotional Frequency</div>';
+  Object.entries(eC).sort(function(a,b){return b[1]-a[1];}).forEach(function(e){var c=ec(e[0]);h+='<div class="bar-row"><div class="bar-label" style="color:'+c+'">'+esc(e[0])+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(e[1]/tot*100)+'%;background:'+c+'"></div></div><div class="bar-n">'+e[1]+'</div></div>';});
+  h+='</div><div class="p-card"><div class="p-title">Life Stage Distribution</div>';
+  STAGES.forEach(function(s){var c=mems.filter(function(m){return m.lifeStage===s;}).length;if(!c)return;h+='<div class="bar-row"><div class="bar-label" style="color:#a090c0;font-size:0.68rem;width:130px">'+s+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(c/tot*100)+'%;background:rgba(176,143,212,0.6)"></div></div><div class="bar-n">'+c+'</div></div>';});
+  h+='</div>';
+  var th=Object.entries(tC).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
+  if(th.length){h+='<div class="p-card"><div class="p-title">Recurring Themes</div><div class="tags">';th.forEach(function(t){h+='<span class="tag" style="padding:0.3rem 0.7rem;background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t[0])+(t[1]>1?' ×'+t[1]:'')+' </span>';});h+='</div></div>';}
+  var gaps=STAGES.filter(function(s){return s!=="Uncertain"&&!mems.find(function(m){return m.lifeStage===s;});});
+  h+='<div class="p-card"><div class="p-title">Memory Gaps</div>';
+  if(!gaps.length)h+='<p style="color:#6a5a80;font-size:0.82rem">All life stages represented.</p>';
+  else gaps.forEach(function(s){h+='<div style="font-size:0.8rem;color:#6a5a80;margin-bottom:0.3rem">◦ '+s+'</div>';});
+  h+='</div>';
+  var pM=mems.filter(function(m){return pt(m.people).length>0;});
+  if(pM.length){
+    var pd={};
+    pM.forEach(function(m){pt(m.people).forEach(function(p){if(!pd[p])pd[p]={count:0,themes:{},emotions:{}};pd[p].count++;pt(m.recurringTheme).forEach(function(t){pd[p].themes[t]=(pd[p].themes[t]||0)+1;});pt(m.emotions).forEach(function(e){pd[p].emotions[e]=(pd[p].emotions[e]||0)+1;});});});
+    h+='<div class="p-card"><div class="p-title">People & Associations</div>';
+    Object.entries(pd).sort(function(a,b){return b[1].count-a[1].count;}).forEach(function(en){
+      var nm=en[0],d=en[1];
+      var tT=Object.entries(d.themes).sort(function(a,b){return b[1]-a[1];}).slice(0,5).map(function(t){return t[0];});
+      var tE=Object.entries(d.emotions).sort(function(a,b){return b[1]-a[1];}).slice(0,4).map(function(e){return e[0];});
+      h+='<div style="margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid rgba(176,143,212,0.1)"><div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem"><span style="font-size:0.95rem;color:#e8c97e">'+esc(nm)+'</span><span style="font-size:0.72rem;color:#6a5a80">'+d.count+' memor'+(d.count===1?'y':'ies')+'</span></div>';
+      if(tE.length){h+='<div style="margin-bottom:0.35rem"><span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#6a5a80">Emotions: </span>';tE.forEach(function(e){var c=ec(e);h+='<span class="tag" style="background:rgba('+rgb(c)+',0.15);color:'+c+';border:1px solid rgba('+rgb(c)+',0.4)">'+esc(e)+'</span> ';});h+='</div>';}
+      if(tT.length){h+='<div><span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#6a5a80">Themes: </span>';tT.forEach(function(t){h+='<span class="tag" style="background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t)+'</span> ';});h+='</div>';}
+      h+='</div>';
     });
-    html += '<div class="p-card"><div class="p-title">People & Associations</div>';
-    Object.entries(personData).sort(function(a,b){ return b[1].count-a[1].count; }).forEach(function(entry){
-      var name = entry[0], data = entry[1];
-      var topThemes = Object.entries(data.themes).sort(function(a,b){ return b[1]-a[1]; }).slice(0,5).map(function(t){ return t[0]; });
-      var topEmotions = Object.entries(data.emotions).sort(function(a,b){ return b[1]-a[1]; }).slice(0,4).map(function(e){ return e[0]; });
-      html += '<div style="margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid rgba(176,143,212,0.1)">';
-      html += '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">';
-      html += '<span style="font-size:0.95rem;color:#e8c97e">'+esc(name)+'</span>';
-      html += '<span style="font-size:0.72rem;color:#6a5a80">'+data.count+' memor'+(data.count===1?'y':'ies')+'</span></div>';
-      if(topEmotions.length) {
-        html += '<div style="margin-bottom:0.35rem"><span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#6a5a80">Emotions: </span>';
-        topEmotions.forEach(function(e){ html += '<span class="tag" style="background:rgba('+hexToRgb(EC[e])+',0.15);color:'+EC[e]+';border:1px solid rgba('+hexToRgb(EC[e])+',0.4)">'+e+'</span> '; });
-        html += '</div>';
-      }
-      if(topThemes.length) {
-        html += '<div><span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#6a5a80">Themes: </span>';
-        topThemes.forEach(function(t){ html += '<span class="tag" style="background:rgba(176,143,212,0.1);color:#c8b8e8;border:1px solid rgba(176,143,212,0.2)">'+esc(t)+'</span> '; });
-        html += '</div>';
-      }
-      html += '</div>';
-    });
-    html += '</div>';
+    h+='</div>';
   }
-
-  el.innerHTML = html;
+  el.innerHTML=h;
 }
 
-function exportMemories() {
-  var blob = new Blob([JSON.stringify(memories,null,2)],{type:"application/json"});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement("a");
-  a.href=url; a.download="memories-"+new Date().toISOString().slice(0,10)+".json"; a.click();
-  URL.revokeObjectURL(url);
+function expMems(){
+  var d={memories:mems,library:lib};
+  var blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});
+  var url=URL.createObjectURL(blob);var a=document.createElement("a");
+  a.href=url;a.download="memories-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(url);
 }
 
-function importMemories() {
-  var file = document.getElementById("import-file").files[0];
-  if(!file) return;
-  var r = new FileReader();
-  r.onload = function(ev) {
-    try {
-      var imp = JSON.parse(ev.target.result);
-      if(!Array.isArray(imp)) throw new Error("Not an array");
-      var added = 0, updated = 0;
-      imp.forEach(function(m) {
-        if(!m.id) return;
-        var existing = memories.find(function(x){ return x.id===m.id; });
-        if(!existing) {
-          memories.push(m);
-          added++;
-        } else {
-          var impDate = new Date(m.updatedAt||m.createdAt||0);
-          var existDate = new Date(existing.updatedAt||existing.createdAt||0);
-          if(impDate > existDate) {
-            memories = memories.map(function(x){ return x.id===m.id ? m : x; });
-            updated++;
-          }
-        }
+function impMems(){
+  var file=document.getElementById("import-file").files[0];if(!file)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    try{
+      var parsed=JSON.parse(ev.target.result);
+      var imp=Array.isArray(parsed)?parsed:(parsed.memories||[]);
+      var impLib=Array.isArray(parsed)?[]:(parsed.library||[]);
+      var added=0,updated=0;
+      imp.forEach(function(m){
+        if(!m.id)return;
+        if(Array.isArray(m.emotions)){}// keep as array
+        var ex=mems.find(function(x){return x.id===m.id;});
+        if(!ex){mems.push(m);added++;}
+        else{var id=new Date(m.updatedAt||m.createdAt||0),ed=new Date(ex.updatedAt||ex.createdAt||0);if(id>ed){mems=mems.map(function(x){return x.id===m.id?m:x;});updated++;}}
       });
-      saveData(); renderAll();
-      alert("Import complete!\n" + added + " new memories added.\n" + updated + " memories updated.\nTotal: " + memories.length);
-    } catch(err) {
-      alert("Could not read that file: "+err.message);
-    }
-    document.getElementById("import-file").value = "";
+      var la=0;
+      impLib.forEach(function(item){if(item.id&&!lib.find(function(x){return x.id===item.id;})){lib.push(item);la++;}});
+      svMems();svLib();renderAll();
+      alert("Import complete!\n"+added+" memories added, "+updated+" updated.\n"+la+" library items added.");
+    }catch(err){alert("Could not read that file: "+err.message);}
+    document.getElementById("import-file").value="";
   };
-  r.onerror = function(){ alert("File reading failed."); };
+  r.onerror=function(){alert("File reading failed.");};
   r.readAsText(file);
 }
 
-// Auto-unlock if already unlocked this session
-if(sessionStorage.getItem("unlocked") === "1") {
-  readOnly = sessionStorage.getItem("readonly") === "1";
-  document.getElementById("lock-screen").style.display = "none";
-  document.getElementById("main-app").style.display = "block";
-  resetTimer();
-  load();
+if(sessionStorage.getItem("unlocked")==="1"){
+  ro=sessionStorage.getItem("ro")==="1";
+  document.getElementById("lock-screen").style.display="none";
+  document.getElementById("main-app").style.display="block";
+  resetTmr();load();
 }
 </script>
 </body>
