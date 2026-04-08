@@ -90,6 +90,9 @@ select option{background:#1a1028}
 .detail-img{width:100%;border-radius:0.5rem;margin-bottom:0.5rem}
 .lib-item{background:rgba(255,255,255,0.03);border:1px solid rgba(176,143,212,0.12);border-radius:0.65rem;padding:0.9rem;margin-bottom:0.85rem}
 .lib-del{padding:0.25rem 0.65rem;border-radius:2rem;border:1px solid rgba(232,126,126,0.3);background:transparent;color:#e87e7e;cursor:pointer;font-size:0.72rem;font-family:inherit;margin-top:0.5rem}
+.reorder-btn{background:none;border:1px solid rgba(176,143,212,0.2);color:#7a6a90;cursor:pointer;border-radius:0.3rem;font-size:0.85rem;padding:0.2rem 0.5rem;font-family:inherit;line-height:1}
+.reorder-btn:active{background:rgba(176,143,212,0.15)}
+.reorder-handle{display:flex;flex-direction:column;gap:0.25rem;justify-content:center;flex-shrink:0;padding-right:0.25rem}
 </style>
 </head>
 <body>
@@ -118,7 +121,10 @@ select option{background:#1a1028}
 
 <div id="view-timeline" class="view active">
   <div class="filter-wrap">
-    <div class="filter-label">Filter by emotion</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+      <div class="filter-label" style="margin-bottom:0">Filter by emotion</div>
+      <button class="btn-sm" id="reorder-btn" style="display:none">⇅ Reorder</button>
+    </div>
     <div class="tags" id="filter-chips"></div>
     <div id="people-filter"></div>
   </div>
@@ -226,7 +232,7 @@ select option{background:#1a1028}
 </div>
 
 <script>
-var PW="2535761315",TPW="therapist",TOMS=600000,tmr=null,ro=false;
+var PW="2535761315",TPW="therapist",TOMS=600000,tmr=null,ro=false,reordering=false;
 var dCtx=null,dDrw=false,dMode="pen",dClr="#e8e0f0",dSz=3;
 var lCtx=null,lDrw=false,lMode="pen",lClr="#e8e0f0",lSz=3,lPh=null;
 var cPhotos=[],mems=[],lib=[];
@@ -280,6 +286,7 @@ function applyRO(){
   ["nav-add","export-btn"].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=ro?"none":"";});
   var il=document.getElementById("import-label");if(il)il.style.display=ro?"none":"";
   var nl=document.getElementById("nav-library");if(nl)nl.style.display=ro?"none":"";
+  var rb=document.getElementById("reorder-btn");if(rb)rb.style.display=ro?"none":"";
 }
 
 function mkCanvas(id,onPen,onErase,onClear,colorAttr,sizeId){
@@ -344,6 +351,15 @@ function wireAll(){
   document.getElementById("search-btn").onclick=function(){showV("search");document.getElementById("search-input").focus();};
   document.getElementById("search-input").oninput=renderSearch;
   document.getElementById("lib-save-btn").onclick=saveLibItem;
+  var rb=document.getElementById("reorder-btn");
+  if(rb)rb.onclick=function(){
+    reordering=!reordering;
+    rb.textContent=reordering?"✓ Done":"⇅ Reorder";
+    rb.style.borderColor=reordering?"#b08fd4":"rgba(176,143,212,0.25)";
+    rb.style.color=reordering?"#b08fd4":"#b08fd4";
+    fEmo=null;fPer=null;
+    renderTL();
+  };
   initPhotoGrid();
 }
 
@@ -354,6 +370,7 @@ function showV(v){
   var nb=document.getElementById("nav-"+v);if(nb)nb.classList.add("active");
   if(v==="add"&&!editId)resetForm();
   if(v==="patterns")renderPat();
+  if(v!=="timeline"&&reordering){reordering=false;var rb=document.getElementById("reorder-btn");if(rb){rb.textContent="⇅ Reorder";rb.style.borderColor="rgba(176,143,212,0.25)";}}
   if(v==="timeline")renderTL();
   if(v==="search")renderSearch();
   if(v==="library")renderLib();
@@ -367,11 +384,38 @@ function renderAll(){
 }
 
 function srtMems(list){
+  // If any memory has a manual sortOrder, use it; otherwise fall back to stage+age
+  var hasOrder=list.some(function(m){return m.sortOrder!==undefined;});
+  if(hasOrder){
+    return list.slice().sort(function(a,b){
+      var ao=a.sortOrder!==undefined?a.sortOrder:99999;
+      var bo=b.sortOrder!==undefined?b.sortOrder:99999;
+      if(ao!==bo)return ao-bo;
+      var si=STAGES.indexOf(a.lifeStage)-STAGES.indexOf(b.lifeStage);
+      if(si!==0)return si;
+      return pAge(a.approximateAge)-pAge(b.approximateAge);
+    });
+  }
   return list.slice().sort(function(a,b){
     var si=STAGES.indexOf(a.lifeStage)-STAGES.indexOf(b.lifeStage);
     if(si!==0)return si;
     return pAge(a.approximateAge)-pAge(b.approximateAge);
   });
+}
+
+function moveMemory(id,dir){
+  var sorted=srtMems(mems);
+  var idx=sorted.findIndex(function(m){return m.id===id;});
+  var newIdx=idx+dir;
+  if(newIdx<0||newIdx>=sorted.length)return;
+  // Swap sortOrder values
+  var tmp=sorted[idx];sorted[idx]=sorted[newIdx];sorted[newIdx]=tmp;
+  sorted.forEach(function(m,i){m.sortOrder=i;});
+  mems=mems.map(function(m){
+    var updated=sorted.find(function(s){return s.id===m.id;});
+    return updated||m;
+  });
+  svMems();renderTL();
 }
 
 function renderTL(){
@@ -404,17 +448,33 @@ function renderTL(){
   var h="";
   filt.forEach(function(m,i){
     var dc=CC[m.confidence]||"#4a3f6b",hM=m.drawing||(m.photos&&m.photos.length);
-    h+='<div class="tl-item"><div class="tl-spine"><div class="tl-dot" style="background:'+dc+';box-shadow:0 0 6px '+dc+'"></div>'+(i<filt.length-1?'<div class="tl-line"></div>':'')+'</div>';
-    h+='<div class="card" data-id="'+m.id+'"><div class="card-meta">'+(m.lifeStage||'')+(m.approximateAge?' · ~'+m.approximateAge:'')+(hM?' · <span style="color:#b08fd4">✎</span>':'')+'</div>';
-    h+='<div class="card-title">'+esc(m.title)+'</div><div class="card-preview">'+esc(m.content)+'</div>';
+    h+='<div class="tl-item">';
+    if(reordering){
+      h+='<div class="reorder-handle">';
+      h+='<button class="reorder-btn" data-mv="'+m.id+'" data-dir="-1" title="Move up">▲</button>';
+      h+='<button class="reorder-btn" data-mv="'+m.id+'" data-dir="1" title="Move down">▼</button>';
+      h+='</div>';
+    } else {
+      h+='<div class="tl-spine"><div class="tl-dot" style="background:'+dc+';box-shadow:0 0 6px '+dc+'"></div>'+(i<filt.length-1?'<div class="tl-line"></div>':'')+'</div>';
+    }
+    h+='<div class="card" '+(reordering?'style="cursor:default"':'data-id="'+m.id+'"')+'>';
+    h+='<div class="card-meta">'+(m.lifeStage||'')+(m.approximateAge?' · ~'+m.approximateAge:'')+(hM?' · <span style="color:#b08fd4">✎</span>':'')+'</div>';
+    h+='<div class="card-title">'+esc(m.title)+'</div>';
+    if(!reordering)h+='<div class="card-preview">'+esc(m.content)+'</div>';
     h+='<div class="tags">';
     pt(m.emotions).forEach(function(e){var c=ec(e);h+='<span class="tag" style="background:rgba('+rgb(c)+',0.15);color:'+c+';border:1px solid rgba('+rgb(c)+',0.4)">'+esc(e)+'</span>';});
     pt(m.people).forEach(function(p){h+='<span class="tag" style="background:rgba(232,199,126,0.1);color:#e8c97e;border:1px solid rgba(232,199,126,0.3)">'+esc(p)+'</span>';});
-    if(m.confidence)h+='<span class="tag" style="background:rgba('+rgb(dc)+',0.12);color:'+dc+';border:1px solid rgba('+rgb(dc)+',0.35);margin-left:auto">'+m.confidence+'</span>';
+    if(!reordering&&m.confidence)h+='<span class="tag" style="background:rgba('+rgb(dc)+',0.12);color:'+dc+';border:1px solid rgba('+rgb(dc)+',0.35);margin-left:auto">'+m.confidence+'</span>';
     h+='</div></div></div>';
   });
   document.getElementById("timeline-list").innerHTML=h;
-  document.querySelectorAll(".card[data-id]").forEach(function(c){c.onclick=function(){showDetail(c.dataset.id);};});
+  if(reordering){
+    document.querySelectorAll("[data-mv]").forEach(function(btn){
+      btn.onclick=function(e){e.stopPropagation();moveMemory(btn.dataset.mv,parseInt(btn.dataset.dir));};
+    });
+  } else {
+    document.querySelectorAll(".card[data-id]").forEach(function(c){c.onclick=function(){showDetail(c.dataset.id);};});
+  }
 }
 
 function showDetail(id){
@@ -508,8 +568,18 @@ function saveLibItem(){
   var title=document.getElementById("lib-title").value.trim();
   var notes=document.getElementById("lib-notes").value.trim();
   var drawing=lCtx?lCtx._getData():null;
-  if(!title&&!drawing&&!lPh){alert("Please add a title, sketch, or image.");return;}
-  lib.push({id:Date.now().toString(),title:title||"Untitled",notes:notes,drawing:drawing,photo:lPh,createdAt:new Date().toISOString()});
+  var editingLibId=document.getElementById("lib-save-btn").dataset.editId||null;
+  if(editingLibId){
+    lib=lib.map(function(item){
+      if(item.id!==editingLibId)return item;
+      return{id:item.id,title:title||"Untitled",notes:notes,drawing:drawing||item.drawing,photo:lPh||item.photo,createdAt:item.createdAt};
+    });
+    document.getElementById("lib-save-btn").textContent="Save to Library";
+    delete document.getElementById("lib-save-btn").dataset.editId;
+  } else {
+    if(!title&&!drawing&&!lPh){alert("Please add a title, sketch, or image.");return;}
+    lib.push({id:Date.now().toString(),title:title||"Untitled",notes:notes,drawing:drawing,photo:lPh,createdAt:new Date().toISOString()});
+  }
   svLib();
   document.getElementById("lib-title").value="";document.getElementById("lib-notes").value="";
   lPh=null;document.getElementById("lib-photo-preview").innerHTML="";
@@ -517,20 +587,36 @@ function saveLibItem(){
   renderLib();
 }
 
+function editLibItem(id){
+  var item=lib.find(function(i){return i.id===id;});if(!item)return;
+  document.getElementById("lib-title").value=item.title||"";
+  document.getElementById("lib-notes").value=item.notes||"";
+  if(item.photo){lPh=item.photo;document.getElementById("lib-photo-preview").innerHTML='<img src="'+item.photo+'" style="width:100%;border-radius:0.4rem">';}
+  else{lPh=null;document.getElementById("lib-photo-preview").innerHTML="";}
+  if(lCtx&&item.drawing)lCtx._load(item.drawing);
+  else if(lCtx)lCtx._reset();
+  document.getElementById("lib-save-btn").textContent="Update Item";
+  document.getElementById("lib-save-btn").dataset.editId=id;
+  // Scroll to form
+  document.getElementById("lib-save-btn").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
 function renderLib(){
   var el=document.getElementById("lib-items");if(!el)return;
   if(!lib.length){el.innerHTML='<div class="empty"><div class="empty-icon">◎</div><p>No library items yet.<br><span style="font-size:0.8rem">Add floor plans and shared images below.</span></p></div>';return;}
   var h="";
   lib.forEach(function(item){
-    h+='<div class="lib-item"><div style="font-size:0.95rem;color:#e8e0f0;margin-bottom:0.25rem">'+esc(item.title)+'</div>';
+    h+='<div class="lib-item">';
+    h+='<div style="font-size:0.95rem;color:#e8e0f0;margin-bottom:0.25rem">'+esc(item.title)+'</div>';
     if(item.notes)h+='<div style="font-size:0.78rem;color:#6a5a80;margin-bottom:0.6rem">'+esc(item.notes)+'</div>';
     if(item.drawing)h+='<img src="'+item.drawing+'" style="width:100%;border-radius:0.4rem;margin-bottom:0.5rem">';
     if(item.photo)h+='<img src="'+item.photo+'" style="width:100%;border-radius:0.4rem;margin-bottom:0.5rem">';
-    if(!ro)h+='<button class="lib-del" data-lid="'+item.id+'">Delete</button>';
+    if(!ro)h+='<div style="display:flex;gap:0.5rem;margin-top:0.5rem"><button class="btn-edit" data-ledit="'+item.id+'">Edit</button><button class="lib-del" data-lid="'+item.id+'">Delete</button></div>';
     h+='</div>';
   });
   el.innerHTML=h;
-  document.querySelectorAll("[data-lid]").forEach(function(b){b.onclick=function(){lib=lib.filter(function(i){return i.id!==b.dataset.lid;});svLib();renderLib();};});
+  document.querySelectorAll("[data-lid]").forEach(function(b){b.onclick=function(){if(confirm("Delete this item?"))lib=lib.filter(function(i){return i.id!==b.dataset.lid;});svLib();renderLib();};});
+  document.querySelectorAll("[data-ledit]").forEach(function(b){b.onclick=function(){editLibItem(b.dataset.ledit);};});
 }
 
 function renderSearch(){
