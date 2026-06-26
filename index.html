@@ -734,13 +734,7 @@ function impMems(){
       svMems();svLib();renderAll();
       alert("Import complete!\n"+added+" memories added, "+updated+" updated.\n"+la+" library items added.\n\nTotal file size read: "+text.length+" characters.");
     }catch(err){
-      alert("Could not read that file: "+err.message+"\n\nFile length was: "+text.length+" characters (expected closer to "+file.size+").");
-    }
-    document.getElementById("import-file").value="";
-  }
-
-  readNextChunk();
-}
+      alert("Could not read 
   
 if(sessionStorage.getItem("unlocked")==="1"){
   ro=sessionStorage.getItem("ro")==="1";
