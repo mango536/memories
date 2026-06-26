@@ -688,34 +688,29 @@ function expMems(){
   a.href=url;a.download="memories-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(url);
 }
 
-function impMems(){
+ function impMems(){
   var file=document.getElementById("import-file").files[0];if(!file)return;
-  var r=new FileReader();
-  r.onload=function(ev){
-    var text=ev.target.result;
-    try{
-      var parsed=JSON.parse(text);
-      var imp=Array.isArray(parsed)?parsed:(parsed.memories||[]);
-      var impLib=Array.isArray(parsed)?[]:(parsed.library||[]);
-      var added=0,updated=0;
-      imp.forEach(function(m){
-        if(!m.id)return;
-        var ex=mems.find(function(x){return x.id===m.id;});
-        if(!ex){mems.push(m);added++;}
-        else{var id=new Date(m.updatedAt||m.createdAt||0),ed=new Date(ex.updatedAt||ex.createdAt||0);if(id>ed){mems=mems.map(function(x){return x.id===m.id?m:x;});updated++;}}
-      });
-      var la=0;
-      impLib.forEach(function(item){if(item.id&&!lib.find(function(x){return x.id===item.id;})){lib.push(item);la++;}});
-      svMems();svLib();renderAll();
-      alert("Import complete!\n"+added+" memories added, "+updated+" updated.\n"+la+" library items added.");
-    }catch(err){
-      alert("Could not read that file: "+err.message+"\n\nFile length was: "+text.length+" characters.\n\nThis usually means the browser ran out of memory loading a large file. Try closing other tabs and apps, then try again.");
-    }
-    document.getElementById("import-file").value="";
-  };
-  r.onerror=function(){alert("File reading failed: "+(r.error?r.error.message:"unknown error"));};
-  r.readAsText(file);
-}
+  var chunkSize=1024*1024;
+  var offset=0;
+  var chunks=[];
+
+  function readNextChunk(){
+    var reader=new FileReader();
+    var blob=file.slice(offset,offset+chunkSize);
+    reader.onload=function(e){
+      chunks.push(e.target.result);
+      offset+=chunkSize;
+      if(offset<file.size){
+        readNextChunk();
+      } else {
+        finishImport(chunks.join(""));
+      }
+    };
+    reader.onerror=function(){
+      alert("File reading failed at offset "+offset+": "+(reader.error?reader.error.message:"unknown"));
+    };
+    reader.readAsText(blob);
+  }
 
   function finishImport(text){
     try{
@@ -732,9 +727,15 @@ function impMems(){
       var la=0;
       impLib.forEach(function(item){if(item.id&&!lib.find(function(x){return x.id===item.id;})){lib.push(item);la++;}});
       svMems();svLib();renderAll();
-      alert("Import complete!\n"+added+" memories added, "+updated+" updated.\n"+la+" library items added.\n\nTotal file size read: "+text.length+" characters.");
+      alert("Import complete!\n"+added+" memories added, "+updated+" updated.\n"+la+" library items added.");
     }catch(err){
-      alert("Could not read 
+      alert("Could not read that file: "+err.message+"\n\nFile length was: "+text.length+" characters (file.size was "+file.size+" bytes).");
+    }
+    document.getElementById("import-file").value="";
+  }
+
+  readNextChunk();
+ }
   
 if(sessionStorage.getItem("unlocked")==="1"){
   ro=sessionStorage.getItem("ro")==="1";
