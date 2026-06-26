@@ -692,14 +692,14 @@ function impMems(){
   var file=document.getElementById("import-file").files[0];if(!file)return;
   var r=new FileReader();
   r.onload=function(ev){
+    var text=ev.target.result;
     try{
-      var parsed=JSON.parse(ev.target.result);
+      var parsed=JSON.parse(text);
       var imp=Array.isArray(parsed)?parsed:(parsed.memories||[]);
       var impLib=Array.isArray(parsed)?[]:(parsed.library||[]);
       var added=0,updated=0;
       imp.forEach(function(m){
         if(!m.id)return;
-        if(Array.isArray(m.emotions)){}// keep as array
         var ex=mems.find(function(x){return x.id===m.id;});
         if(!ex){mems.push(m);added++;}
         else{var id=new Date(m.updatedAt||m.createdAt||0),ed=new Date(ex.updatedAt||ex.createdAt||0);if(id>ed){mems=mems.map(function(x){return x.id===m.id?m:x;});updated++;}}
@@ -708,13 +708,14 @@ function impMems(){
       impLib.forEach(function(item){if(item.id&&!lib.find(function(x){return x.id===item.id;})){lib.push(item);la++;}});
       svMems();svLib();renderAll();
       alert("Import complete!\n"+added+" memories added, "+updated+" updated.\n"+la+" library items added.");
-    }catch(err){alert("Could not read that file: "+err.message);}
+    }catch(err){
+      alert("Could not read that file: "+err.message+"\n\nFile length was: "+text.length+" characters.\n\nThis usually means the browser ran out of memory loading a large file. Try closing other tabs and apps, then try again.");
+    }
     document.getElementById("import-file").value="";
   };
-  r.onerror=function(){alert("File reading failed.");};
+  r.onerror=function(){alert("File reading failed: "+(r.error?r.error.message:"unknown error"));};
   r.readAsText(file);
 }
-
 if(sessionStorage.getItem("unlocked")==="1"){
   ro=sessionStorage.getItem("ro")==="1";
   document.getElementById("lock-screen").style.display="none";
